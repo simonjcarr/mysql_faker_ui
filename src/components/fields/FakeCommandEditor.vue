@@ -2,11 +2,18 @@
   <div style="min-width: 500px;">
     <div class="text-h4">Fake Command Editor</div>
     <div class="text-sm text-blue">{{activeDatabase.database_name}} > {{activeTable.table_name}} > {{field.name}}</div>
-    <div>
+
+    <div v-if="!field.auto_increment">
       <q-btn class="q-mb-sm" size="sm" dense color="primary" icon="add" label="Add Command" @click="showAddForm" />
-      <div v-if="totalPercent() !== 1" class="bg-red q-pa-sm text-white">
+      <div v-if="totalPercent() !== 1" class="bg-red q-pa-sm text-white q-mb-sm">
       Error Total percentage should be 100%, currently it is {{totalPercent() * 100}}%
       </div>
+      <div v-else class="bg-green q-pa-sm text-white q-mb-sm rounded">
+        Fake data coverage is 100%
+      </div>
+    </div>
+    <div v-else>
+      <div class="bg-amber text-grey-14 q-pa-sm q-mb-sm">This is a an Auto Incrementing field. You can't add Fake Commands</div>
     </div>
 
     <q-card class="q-mb-sm" v-if="displayAddForm">
@@ -29,6 +36,7 @@
     </q-card>
 
     <q-table
+      v-if="!field.auto_increment"
       title="Fake Commands"
       :data="fakeCommands"
       :columns="columns"

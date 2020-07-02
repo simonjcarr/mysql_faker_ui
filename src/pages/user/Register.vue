@@ -31,6 +31,7 @@
 
 <script>
 import Vue from 'vue'
+import { mapMutations, mapState } from 'vuex'
 var vm = new Vue()
 export default {
   data: () => {
@@ -42,7 +43,12 @@ export default {
       errors: []
     }
   },
+  computed: {
+    ...mapState('user', ['token'])
+  },
   methods: {
+    ...mapMutations('user', ['setToken', 'setUser']),
+
     onSubmit() {
       this.errors = []
       this.$axios.post('/user/register', {
@@ -50,8 +56,10 @@ export default {
         email: this.email,
         password: this.password,
         confirm_password: this.confirm_password
-      }).then((result) => {
-        this.$q.localStorage.set('jwt', result.data)
+      }).then(({ data }) => {
+        console.log(data)
+        this.setToken(data.token)
+        this.setUser(data.user)
         this.$q.notify({
           type: 'positive',
           message: 'Your account has been created you were signed in'
@@ -62,7 +70,7 @@ export default {
     }
   },
   mounted() {
-    if(this.$q.localStorage.getItem('jwt')) {
+    if(this.token) {
       this.$router.push('/')
     }
   }

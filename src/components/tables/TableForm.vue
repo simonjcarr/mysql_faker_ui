@@ -72,7 +72,7 @@ export default {
       this.tableData.fake_qty = this.activeTable.fake_qty
       this.tableData.table_comments = this.activeTable.table_comments
     }
-    this.tableData.database_id = this.activeTable.database_id
+    this.tableData.database_id = this.activeDatabase.id
   }
 }
 </script>
