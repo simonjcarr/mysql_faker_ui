@@ -1,5 +1,6 @@
 <template>
   <div>
+    <q-btn size="sm" color="green" label="Select Template" @click="showCommandTemplate=true" />
     <q-form
       @submit="onSubmit"
     >
@@ -9,15 +10,27 @@
 
       </div>
     </q-form>
+    <q-dialog v-model="showCommandTemplate" persistent>
+      <q-card>
+        <q-card-section class="row items-center">
+          <ControlCommandTemplates @useTemplate="useTemplate" />
+        </q-card-section>
+        <q-card-actions align="right">
+          <q-btn flat label="Cancel" color="primary" v-close-popup />
+        </q-card-actions>
+      </q-card>
+    </q-dialog>
   </div>
 </template>
 
 <script>
 import { mapState, mapActions } from 'vuex'
+import ControlCommandTemplates from '../../components/tables/ControlCommandTemplates'
 export default {
   data: () => {
     return {
-      fake_qty: null
+      fake_qty: null,
+      showCommandTemplate: false
     }
   },
   watch:{
@@ -32,10 +45,17 @@ export default {
     ...mapActions('table', ['updateFakeQty']),
     onSubmit() {
       this.updateFakeQty(this.fake_qty)
+    },
+    useTemplate(template){
+      this.fake_qty = template
+      this.showCommandTemplate = false
     }
   },
   mounted() {
     this.fake_qty = this.activeTable.fake_qty
+  },
+  components:{
+    ControlCommandTemplates
   }
 }
 </script>
