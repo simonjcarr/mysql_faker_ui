@@ -14,7 +14,11 @@
         :selected.sync="selected"
         :filter="filter"
         @row-click="rowClick"
-      />
+      >
+      <template v-slot:top>
+        <q-btn v-if="selected.length > 0" color="red" size="sm" icon="delete" label="Delete Selected" @click="deleteSelected" />
+      </template>
+      </q-table>
       <q-dialog v-model="showEditFieldDialog" persistent>
         <q-card>
           <q-card-section class="row items-center">
@@ -65,12 +69,16 @@ export default {
   },
   methods:{
     ...mapActions('database', ['getDatabases']),
+    ...mapActions('table', ['deleteFields']),
     rowClick(e, row) {
       this.editField = row
       this.showEditFieldDialog = true
     },
     commandsUpdated(){
       this.getDatabases()
+    },
+    deleteSelected() {
+      this.deleteFields(this.selected)
     }
   }
 }

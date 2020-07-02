@@ -72,6 +72,7 @@ export default {
         formTitle: null
       },
       selected: [],
+      selectedFields: [],
       showAddCommandForm: false
     }
   },

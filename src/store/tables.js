@@ -55,6 +55,7 @@ export default {
       this._vm.$axios.post('/field', {
         ...field
       }).then(()=>{
+        this._vm.$q.notify({type:'positive', message: 'Field created'})
         dispatch('database/getDatabases', {},{root:true})
       }).catch(()=>{})
     },
@@ -107,8 +108,24 @@ export default {
     getFieldCommands({},field_id){
       return new Promise((resolve, reject) => {
         this._vm.$axios.get('/field/fake_command/' + field_id).then(({ data }) => {
-          console.log(data)
           return resolve(data)
+        })
+      })
+    },
+
+    deleteFields({ dispatch }, fields) {
+      return new Promise((resolve, reject) => {
+        Promise.map(fields, (field) => {
+          this._vm.$axios.delete(`/field/${field.id}`)
+          .then(({ data })=>{
+            dispatch('database/getDatabases', {}, {root:true})
+            this._vm.$q.notify({type:'positive', message: `Field ${field.name} has been deleted`})
+            return resolve(data)
+          })
+          .catch((err)=>{
+            this._vm.$q.notify({type:'negative', message: `Error deleting field ${field.name}`})
+            return reject(err)
+          })
         })
       })
     },
