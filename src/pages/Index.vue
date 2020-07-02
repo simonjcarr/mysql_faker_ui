@@ -1,0 +1,37 @@
+<template>
+  <q-page class="flex flex-center">
+    <div >
+      <div class="text-h1"><span class="text-weight-bold">BAE</span>  Data Faker</div>
+      <div class="q-mt-xl">
+        <q-btn color="primary" size="xl" label="Get Started" to="/database" />
+      </div>
+    </div>
+
+  </q-page>
+</template>
+
+<script>
+import { mapState } from 'vuex'
+import Vue from 'vue'
+var vm = new Vue()
+export default {
+  name: 'PageIndex',
+  data: () => {
+    return {
+      name: ''
+    }
+  },
+  computed: {
+    isLoggedIn: () => {
+      return vm.$q.localStorage.getItem('jwt')? true : false
+    }
+  },
+  mounted() {
+
+  }
+}
+</script>
+
+<style scoped>
+
+</style>
