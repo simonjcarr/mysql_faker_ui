@@ -20,7 +20,7 @@
         </q-tab-panel>
         <q-tab-panel name="jobs">
           <div class="text-h6">Jobs</div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          Lorem ipsum dolor sit amet consectetur adipisicing elit
         </q-tab-panel>
         <q-tab-panel name="data">
           <div class="text-h6">Data</div>
