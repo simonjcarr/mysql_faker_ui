@@ -1,11 +1,15 @@
 <template>
   <div>
-    <div class="q-mb-sm">
-      <RunJobBtn />
+    <div class="q-mb-sm row">
+      <div class="col-11">
+        <RunJobBtn />
+      </div>
     </div>
-    <div class="flex">
-      <JobList @selected="jobSelected"/>
-      <div class="q-ml-md">
+    <div class="row">
+      <div class="col-3">
+        <JobList @selected="jobSelected"/>
+      </div>
+      <div class="q-ml-md col-8">
         <JobLog :job="selected" />
       </div>
     </div>

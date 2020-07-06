@@ -2,7 +2,7 @@
   <div>
     <q-card class="my-card" v-if="job">
       <q-card-section>
-        <div class="text-h5">Job Log</div>
+        <div class="text-h6">Job Log</div>
       </q-card-section>
       <q-card-section>
         <div class="text-h6">Status:
@@ -19,7 +19,9 @@
           <q-item clickable v-ripple v-for="(log, index) in job.logs" :key="index">
 
             <q-item-section :class="{'bg-red text-white':log.status=='error', 'bg-green-3 text-green-10':log.status!='error'}" class="q-pa-sm text-body2">
-              <span class="text-bold">Table: {{log.table}}</span><br>
+              <div class="flex">
+                <span class="text-bold q-mr-md">D: {{log.database_name}}</span> <span class="text-bold">T: {{log.table}}</span>
+              </div>
               {{log.message}}
             </q-item-section>
           </q-item>

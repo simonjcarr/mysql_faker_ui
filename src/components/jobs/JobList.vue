@@ -1,7 +1,7 @@
 <template>
   <q-card class="my-card">
     <q-card-section>
-      <div class="text-h5">Job List</div>
+      <div class="text-h6">Job List</div>
       <div>
         <q-btn size="sm" color="red" icon="delete" label="Flush Jobs" @click="flushJobsClick" />
       </div>
@@ -13,6 +13,7 @@
             <div :class="{'text-black':job.status=='queue', 'text-blue':job.status=='running', 'text-green':job.status=='complete', 'text-red':job.status=='error'}" >
               {{job.job_id}} - {{job.created_at}} - [{{job.status}}]
             </div>
+            <div>D: {{job.database_name}}</div>
           </q-item-section>
         </q-item>
       </q-list>

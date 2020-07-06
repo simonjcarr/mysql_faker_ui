@@ -12,15 +12,17 @@ export default {
   },
   mutations: {
     createJob(state, job){
+      console.log(job)
       if(!state.jobs){
         state.jobs = {}
       }
-      this._vm.$set(state.jobs, `job_${job.id}`)
-      state.jobs[`job_${job.id}`] = {
-        job_id: job.id,
+      this._vm.$set(state.jobs, `job_${job.job.id}`)
+      state.jobs[`job_${job.job.id}`] = {
+        job_id: job.job.id,
         status: "queue",
         logs: [],
-        created_at: job.created_at
+        created_at: job.job.created_at,
+        database_name: job.database.database_name
       }
       state.jobs = state.jobs
     },
@@ -42,9 +44,9 @@ export default {
     }
   },
   actions:{
-    createJob({ commit, rootState, state }){
+    createJob({ commit, rootState }, databaseId){
       this._vm.$axios.post(`/job`, {
-        database_id: rootState.database.activeDatabase.id,
+        database_id: databaseId,
         user_id: rootState.database.activeDatabase.user_id
       }).then(({ data }) => {
         commit('createJob', data)

@@ -9,6 +9,14 @@ export default {
   getters:{
     getActiveTables() {
       return activeDatabase.tables
+    },
+    getDatabasesForSelect(state) {
+      return state.databases.map((db)=>{
+        return {
+          label: db.database_name,
+          value: db.id
+        }
+      })
     }
   },
   mutations: {
