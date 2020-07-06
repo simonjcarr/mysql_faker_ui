@@ -7,7 +7,7 @@
       </q-card-section>
       <q-card-section>
         <q-select style="q-mb-md" v-model="databaseId" :options="databases" label="Select Database" filled />
-        <q-btn :disable="!databaseId" class="q-mt-sm" size="sm" color="green" icon="play_arrow" label="Create Job" @click="runJobClick" />
+        <q-btn :disable="!databaseId" class="q-mt-sm" size="sm" color="primary" icon="play_arrow" label="Create Job" @click="runJobClick" />
       </q-card-section>
     </q-card>
 

@@ -6,19 +6,28 @@
         <AddFieldBtn class="q-ml-sm"/>
       </q-card-section>
       <q-card-section class=" bg-accent text-secondary">
+
         <div v-if="activeTable">
-      <q-table
-        :title="'Fields for Table: ' + activeTable.table_name"
-        :data="activeTable.fields"
-        :columns="columns"
-        row-key="name"
-         selection="multiple"
-        :selected.sync="selected"
-        :filter="filter"
-        @row-click="rowClick"
-      >
+        <q-table
+          :title="'Fields for Table: ' + activeTable.table_name"
+          :data="activeTable.fields"
+          :columns="columns"
+          row-key="name"
+          selection="multiple"
+          :selected.sync="selected"
+          :filter="filter"
+          @row-click="rowClick"
+          virtual-scroll
+          :pagination.sync="pagination"
+          :rows-per-page-options="[0]"
+          style="height: 400px"
+          class="sticky-header-table"
+        >
         <template v-slot:top>
-          <q-btn v-if="selected.length > 0" color="red" size="sm" icon="delete" label="Delete Selected" @click="deleteSelected" />
+          <div class="text-h5">Fields</div>
+          <div class="q-ml-sm">
+            <q-btn v-if="selected.length > 0" color="red" size="sm" icon="delete" label="Delete Selected" @click="deleteSelected" />
+          </div>
         </template>
         </q-table>
         <q-dialog v-model="showEditFieldDialog" persistent>
@@ -64,7 +73,10 @@ export default {
       selected: [],
       colLabels: ['Field', 'Type', 'Size', 'AI', 'Nullable', 'PK'],
       editField: {},
-      showEditFieldDialog: false
+      showEditFieldDialog: false,
+      pagination: {
+        rowsPerPage: 0
+      }
     }
   },
   computed:{

@@ -4,7 +4,7 @@
       <q-card class="my-card">
         <q-card-section class="flex bg-accent text-secondary">
           <AddTableBtn class="q-mb-sm" :create="true" />
-          <q-btn class="q-mb-sm q-ml-md" v-if="selected.length > 0" size="sm" dense color="red" icon="delete" label="Delete selected" @click="deleteSelected" />
+
         </q-card-section>
         <q-card-section class="bg-accent text-secondary">
           <q-table
@@ -16,8 +16,21 @@
             selection="multiple"
             :selected.sync="selected"
             :filter="filter"
+            virtual-scroll
+            :pagination.sync="pagination"
+            :rows-per-page-options="[0]"
+            style="height: 400px"
+            class="sticky-header-table"
+          >
 
-          />
+            <template v-slot:top>
+              <div class="text-h5">Tables</div>
+              <div class="q-ml-sm">
+                <q-btn class="q-ml-md" v-if="selected.length > 0" size="sm" dense color="red" icon="delete" label="Delete selected" @click="deleteSelected" />
+              </div>
+            </template>
+
+          </q-table>
         </q-card-section>
       </q-card>
 
@@ -38,7 +51,10 @@ export default {
         { name: 'field_count', label: 'Field Count', field: row=> row.fields.length, sortable: true}
       ],
       selectedRow: {},
-      filter: ''
+      filter: '',
+      pagination: {
+        rowsPerPage: 0
+      }
     }
   },
   components:{

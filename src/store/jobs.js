@@ -22,7 +22,8 @@ export default {
         status: "queue",
         logs: [],
         created_at: job.job.created_at,
-        database_name: job.database.database_name
+        database_name: job.database.database_name,
+        current_table: ''
       }
       state.jobs = state.jobs
     },
@@ -36,7 +37,14 @@ export default {
       if(state.jobs[`job_${message.job_id}`].status !== 'error') {
         state.jobs[`job_${message.job_id}`].status = message.status
       }
-      console.log(state.jobs[`job_${message.job_id}`])
+      state.jobs[`job_${message.job_id}`].current_table = message.table
+      if(message.status == 'complete'){
+        this._vm.$q.notify({type:'positive', message: `Job Completed for database ${message.database_name}`})
+      }
+      if(message.status == 'error'){
+        this._vm.$q.notify({type: 'negative', message: `Job ended in error for databse ${message.database_name}`})
+      }
+
 
     },
     flushJobs(state) {

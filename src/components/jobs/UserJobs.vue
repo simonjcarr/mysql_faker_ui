@@ -2,15 +2,28 @@
   <div>
     <div class="q-mb-sm row">
       <div class="col-11">
-        <RunJobBtn />
+        <q-card class="bg-accent">
+          <q-card-section>
+            <RunJobBtn />
+          </q-card-section>
+        </q-card>
+
       </div>
     </div>
     <div class="row">
       <div class="col-3">
-        <JobList @selected="jobSelected"/>
+        <q-card class="bg-accent">
+          <q-card-section>
+            <JobList @selected="jobSelected"/>
+          </q-card-section>
+        </q-card>
       </div>
       <div class="q-ml-md col-8">
-        <JobLog :job="selected" />
+        <q-card class="bg-accent" v-if="selected">
+          <q-card-section>
+            <JobLog :job="selected" />
+          </q-card-section>
+        </q-card>
       </div>
     </div>
   </div>
