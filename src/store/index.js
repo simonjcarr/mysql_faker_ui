@@ -3,10 +3,14 @@ import Vuex from 'vuex'
 import database from './database'
 import user from './users'
 import table from './tables'
+import job from './jobs'
 import createPersistedState from "vuex-persistedstate";
+
+
 // import example from './module-example'
 
 Vue.use(Vuex)
+
 
 /*
  * If not building with SSR mode, you can
@@ -32,7 +36,8 @@ export default function (/* { ssrContext } */) {
     modules: {
       database,
       user,
-      table
+      table,
+      job
     },
     plugins: [createPersistedState()],
 

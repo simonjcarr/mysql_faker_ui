@@ -20,7 +20,7 @@
         </q-tab-panel>
         <q-tab-panel name="jobs">
           <div class="text-h6">Jobs</div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit
+          <JobDashboard />
         </q-tab-panel>
         <q-tab-panel name="data">
           <div class="text-h6">Data</div>
@@ -33,6 +33,7 @@
 <script>
 import Settings from '../../components/Settings'
 import JSONPreview from '../../components/JSONPreview'
+import JobDashboard from '../../components/jobs/JobDashboard'
 export default {
   data: () => {
     return {
@@ -41,7 +42,8 @@ export default {
   },
   components: {
     Settings,
-    JSONPreview
+    JSONPreview,
+    JobDashboard
   }
 }
 </script>
