@@ -2,7 +2,8 @@
   <div>
     <q-btn size="sm" color="primary" dense icon="edit" :label="create?'New Table':'Edit Table'" @click="showTableForm" />
     <q-dialog v-model="formVisible" persistent>
-      <q-card>
+
+      <q-card class="bg-accent">
         <q-card-section class="row items-center" style="min-width: 400px">
           <span v-if="!create" class="q-ml-sm text-h6">Edit Table: {{activeTable.table_name}}</span>
           <span v-if="create" class="q-ml-sm text-h6">Add Table</span>
@@ -14,6 +15,7 @@
           <q-btn flat label="Cancel" color="primary" v-close-popup />
         </q-card-actions>
       </q-card>
+
     </q-dialog>
   </div>
 </template>

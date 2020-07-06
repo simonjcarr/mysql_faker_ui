@@ -3,6 +3,7 @@
     <q-card class="my-card">
       <q-card-section>
         <div class="text-h6">Create new Job</div>
+        <div>Select a database from the list below and click <span class="text-bold">Create Job</span> to create a new database or replace an existing database</div>
       </q-card-section>
       <q-card-section>
         <q-select style="q-mb-md" v-model="databaseId" :options="databases" label="Select Database" filled />

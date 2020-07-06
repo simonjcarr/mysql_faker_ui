@@ -1,14 +1,19 @@
 <template>
-    <q-form
-      @submit="onSubmit"
-    >
-      <q-input required v-model="tableData.table_name" type="text" label="Table Name" />
-      <q-input v-model="tableData.fake_qty" type="text" label="Fake Qty" />
-      <q-input v-model="tableData.table_comments" type="textarea" label="Table Comments" />
-      <div>
-        <q-btn class="q-mt-sm" label="Save Table" type="submit" color="primary"/>
-      </div>
-    </q-form>
+    <q-card class="my-card">
+
+      <q-card-section class="">
+        <q-form
+          @submit="onSubmit"
+        >
+          <q-input required v-model="tableData.table_name" type="text" label="Table Name" />
+          <q-input v-model="tableData.fake_qty" type="text" label="Fake Qty" />
+          <q-input v-model="tableData.table_comments" type="textarea" label="Table Comments" />
+          <div>
+            <q-btn class="q-mt-sm" label="Save Table" type="submit" color="primary"/>
+          </div>
+        </q-form>
+      </q-card-section>
+    </q-card>
 </template>
 
 <script>

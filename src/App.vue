@@ -1,5 +1,5 @@
 <template>
-  <div id="q-app">
+  <div id="q-app" class="bg-secondary">
     <router-view />
   </div>
 </template>
@@ -32,3 +32,6 @@ export default {
   }
 }
 </script>
+<style lang="stylus">
+
+</style>

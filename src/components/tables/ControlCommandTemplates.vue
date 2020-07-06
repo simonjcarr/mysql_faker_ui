@@ -2,13 +2,13 @@
   <div>
     <q-card class="q-mb-sm" v-for="(template, index) in templates" :key="index">
       <q-card-section>
-        <div class="text-h6">
+        <div class="text-h6 text-primary">
           {{template.name}}
-          <q-btn size="sm" dense class="block" color="green" icon="check" label="Use this template" @click="useTemplateClick(template.template)" />
+          <q-btn size="sm" dense class="block" color="primary" icon="check" label="Use this template" @click="useTemplateClick(template.template)" />
         </div>
       </q-card-section>
       <q-card-section>
-        <div class="text-blue">{{template.template}}</div>
+        <div class="text-primary">{{template.template}}</div>
       </q-card-section>
       <q-card-section>
         <div class="text-sm">{{template.description}}</div>
@@ -24,7 +24,7 @@ export default {
       templates: [
         {
           name: 'Bill of Material',
-          template: 'BOB|<ASO Count>|<Total Child Items>|<Max Lineage Deapth>',
+          template: 'BOM|<ASO Count>|<Total Child Items>|<Max Lineage Deapth>',
           description:`Generates a bill of material that can be used to populate the table. <ASO Count> is the number of top level items to create.
           <Total Child Items> is the total number of items that each top level (ASO) will contain
           <Max Lineage Deapth> is the maximum deapth the tree will in the BOM will branch to.

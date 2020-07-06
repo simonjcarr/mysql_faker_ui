@@ -1,17 +1,26 @@
 <template>
   <div>
-    <q-btn size="sm" color="green" label="Select Template" @click="showCommandTemplate=true" />
-    <q-form
-      @submit="onSubmit"
-    >
-      <q-input v-model="fake_qty" type="text" label="Fake Qty Command" hint="Can be numeric qty i.e. 100 or a Control Command. See the docs" />
-      <div>
-        <q-btn dense class="q-mt-sm" label="Save" type="submit" color="primary"/>
+    <q-card >
+      <q-card-section>
+        <q-btn size="sm" color="primary" label="Select Template" @click="showCommandTemplate=true" />
+      </q-card-section>
+      <q-card-section>
+         <q-form
+          @submit="onSubmit"
+        >
+          <q-input v-model="fake_qty" type="text" label="Fake Qty Command" hint="Can be numeric qty i.e. 100 or a Control Command. See the docs" />
+          <div>
+            <q-btn dense class="q-mt-sm" label="Save" type="submit" color="primary"/>
 
-      </div>
-    </q-form>
+          </div>
+        </q-form>
+      </q-card-section>
+    </q-card>
+
+
+
     <q-dialog v-model="showCommandTemplate" persistent>
-      <q-card>
+      <q-card class="bg-accent">
         <q-card-section class="row items-center">
           <ControlCommandTemplates @useTemplate="useTemplate" />
         </q-card-section>

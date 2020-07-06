@@ -6,6 +6,7 @@
       node-key="id"
       :expanded.sync="expanded"
       :selected.sync="selected"
+      text-color="accent"
     />
   </div>
 </template>

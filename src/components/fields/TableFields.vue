@@ -1,10 +1,12 @@
 <template>
   <div>
-    <div class="flex">
-      <EditTableBtn v-if="activeTable" class="q-mb-sm"  :table="activeTable" label="Edit Table" />
-      <AddFieldBtn class="q-ml-sm"/>
-    </div>
-    <div v-if="activeTable">
+    <q-card class="my-card">
+      <q-card-section class="flex bg-accent text-secondary">
+        <EditTableBtn v-if="activeTable" class="q-mb-sm"  :table="activeTable" label="Edit Table" />
+        <AddFieldBtn class="q-ml-sm"/>
+      </q-card-section>
+      <q-card-section class=" bg-accent text-secondary">
+        <div v-if="activeTable">
       <q-table
         :title="'Fields for Table: ' + activeTable.table_name"
         :data="activeTable.fields"
@@ -15,21 +17,27 @@
         :filter="filter"
         @row-click="rowClick"
       >
-      <template v-slot:top>
-        <q-btn v-if="selected.length > 0" color="red" size="sm" icon="delete" label="Delete Selected" @click="deleteSelected" />
-      </template>
-      </q-table>
-      <q-dialog v-model="showEditFieldDialog" persistent>
-        <q-card>
-          <q-card-section class="row items-center">
-            <FakeCommandEditor @updated="commandsUpdated" :field="editField"/>
-          </q-card-section>
-          <q-card-actions align="right">
-            <q-btn flat label="Cancel" color="primary" v-close-popup />
-          </q-card-actions>
-        </q-card>
-      </q-dialog>
+        <template v-slot:top>
+          <q-btn v-if="selected.length > 0" color="red" size="sm" icon="delete" label="Delete Selected" @click="deleteSelected" />
+        </template>
+        </q-table>
+        <q-dialog v-model="showEditFieldDialog" persistent>
+          <q-card>
+            <q-card-section class="row items-center">
+              <FakeCommandEditor @updated="commandsUpdated" :field="editField"/>
+            </q-card-section>
+            <q-card-actions align="right">
+              <q-btn flat label="Cancel" color="primary" v-close-popup />
+            </q-card-actions>
+          </q-card>
+        </q-dialog>
+      </div>
+      </q-card-section>
+    </q-card>
+    <div class="flex">
+
     </div>
+
   </div>
 </template>
 

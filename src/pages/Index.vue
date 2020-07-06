@@ -1,7 +1,7 @@
 <template>
   <q-page class="flex flex-center">
     <div >
-      <div class="text-h1"><span class="text-weight-bold">BAE</span>  Data Faker</div>
+      <div class="text-h1 text-accent"><span class="text-weight-bold">BAE</span>  <span class="text-primary"> Data Faker</span></div>
       <div class="q-mt-xl">
         <q-btn color="primary" size="xl" label="Get Started" to="/database" />
       </div>

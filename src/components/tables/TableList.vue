@@ -1,23 +1,34 @@
 <template>
   <q-page>
     <div v-if="activeDatabase">
-      <q-btn class="q-mb-sm" v-if="selected.length > 0" size="sm" dense color="red" icon="delete" label="Delete selected" @click="deleteSelected" />
-      <q-table
-        title="Tables"
-        :data="activeDatabase.tables"
-        :columns="columns"
-        row-key="id"
-        @row-click="onRowClick"
-        selection="multiple"
-        :selected.sync="selected"
-        :filter="filter"
-      />
+      <q-card class="my-card">
+        <q-card-section class="flex bg-accent text-secondary">
+          <AddTableBtn class="q-mb-sm" :create="true" />
+          <q-btn class="q-mb-sm q-ml-md" v-if="selected.length > 0" size="sm" dense color="red" icon="delete" label="Delete selected" @click="deleteSelected" />
+        </q-card-section>
+        <q-card-section class="bg-accent text-secondary">
+          <q-table
+            title="Tables"
+            :data="activeDatabase.tables"
+            :columns="columns"
+            row-key="id"
+            @row-click="onRowClick"
+            selection="multiple"
+            :selected.sync="selected"
+            :filter="filter"
+
+          />
+        </q-card-section>
+      </q-card>
+
+
     </div>
   </q-page>
 </template>
 
 <script>
 import { mapState, mapMutations, mapActions } from 'vuex'
+import AddTableBtn from './EditTableBtn'
 export default {
   data: () => {
     return {
@@ -29,6 +40,9 @@ export default {
       selectedRow: {},
       filter: ''
     }
+  },
+  components:{
+    AddTableBtn
   },
   computed:{
     ...mapState('database', ['activeDatabase'])

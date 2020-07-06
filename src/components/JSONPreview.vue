@@ -1,10 +1,16 @@
 <template>
   <div>
-    <q-markdown
-    :src="'```\n' + JSON.stringify(markdown,null,2) + '\n```'"
-    >
+    <div class="q-mb-sm text-h5 text-accent text-bold">JSON Ouput: <span class="text-primary">{{activeDatabase.database_name}}</span></div>
+    <q-card class="bg-accent">
+      <q-card-section>
+        <q-markdown
+        :src="'```\n' + JSON.stringify(markdown,null,2) + '\n```'"
+        >
 
-    </q-markdown>
+        </q-markdown>
+      </q-card-section>
+    </q-card>
+
   </div>
 </template>
 

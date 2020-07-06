@@ -12,6 +12,7 @@
         />
 
         <q-toolbar-title>
+
          <q-btn
           flat
           label="BAE Data Faker"
@@ -47,13 +48,26 @@
       v-model="leftDrawerOpen"
       show-if-above
       bordered
-      content-class="bg-grey-1"
+      content-class="bg-secondary"
+      class="bg-secondary"
     >
-      <q-list>
+      <q-list class="bg-secondary text-accent">
         <q-item-label
           header
-          class="text-grey-8"
         >
+             <q-img
+              src="logo.png"
+              :ratio="16/9"
+              height="30px"
+              spinner-color="primary"
+              spinner-size="82px"
+            />
+        </q-item-label>
+        <q-item-label
+          header
+          class="bg-secondary"
+        >
+
           Database Resources
         </q-item-label>
         <DatabaseList />
