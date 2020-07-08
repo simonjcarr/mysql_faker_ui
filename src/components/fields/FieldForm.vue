@@ -7,9 +7,18 @@
         <q-input required v-model="field.name" type="text" label="Field Name" />
         <q-select required v-model="field.data_type" :options="dataTypes" label="Data Type" />
         <q-input v-model="field.size" type="number" label="Field Size" />
-        <q-toggle class="block" v-model="field.auto_increment" color="green" label="Auto Increment" />
-        <q-toggle class="block" v-model="field.nullable" color="green" label="Nullable" />
-        <q-toggle class="block" v-model="field.primary_key" color="green" label="Primary Key" />
+        <div>
+          <q-toggle v-model="field.auto_increment" color="green" label="Auto Increment" />
+        </div>
+        <div>
+          <q-toggle v-model="field.nullable" color="green" label="Nullable" />
+        </div>
+        <div>
+          <q-toggle v-model="field.idx" color="green" label="Index" />
+        </div>
+        <div>
+          <q-toggle v-model="field.primary_key" color="green" label="Primary Key" />
+        </div>
         <q-input v-model="field.description" type="textarea" label="Description" />
         <q-btn class="q-mt-sm" label="Submit" type="submit" color="primary"/>
 
@@ -31,6 +40,7 @@ export default {
         auto_increment: false,
         nullable: false,
         primary_key: false,
+        idx: false,
         description: null
       },
       dataTypes: [
