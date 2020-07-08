@@ -8,6 +8,7 @@
         </q-card-section>
         <q-card-section class="bg-accent text-secondary">
           <q-table
+            dense
             title="Tables"
             :data="activeDatabase.tables"
             :columns="columns"

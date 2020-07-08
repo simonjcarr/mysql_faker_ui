@@ -9,6 +9,7 @@
 
         <div v-if="activeTable">
         <q-table
+          dense
           :title="'Fields for Table: ' + activeTable.table_name"
           :data="activeTable.fields"
           :columns="columns"

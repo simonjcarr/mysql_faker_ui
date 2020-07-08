@@ -20,6 +20,29 @@ export default {
     },
     getDatabaseList(state) {
       return state.databases
+    },
+    getDatabase(state) {
+      return db_id => state.databases.filter(db => {
+        if(db.id == db_id) {
+          return db
+        }
+      })
+    },
+    getDatabaseTables(state) {
+      return db_id => state.databases.map(db => {
+        if(db.id == db_id) {
+          return db.tables
+        }
+      })
+    },
+    getDatabaseTableNames(state){
+      return db_id => state.databases.map(db => {
+        if(db.id == db_id) {
+          return db.tables.map(table => {
+            return table.table_name
+          })
+        }
+      })
     }
   },
   mutations: {

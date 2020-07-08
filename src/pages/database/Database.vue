@@ -24,8 +24,7 @@
           <JobDashboard />
         </q-tab-panel>
         <q-tab-panel name="data">
-          <div class="text-h6">Data</div>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
+          <ExportDashboard />
         </q-tab-panel>
       </q-tab-panels>
   </div>
@@ -35,6 +34,7 @@
 import Settings from '../../components/Settings'
 import JSONPreview from '../../components/JSONPreview'
 import JobDashboard from '../../components/jobs/JobDashboard'
+import ExportDashboard from '../../components/export/ExportDashboard'
 import { mapGetters } from 'vuex'
 export default {
   data: () => {
@@ -45,7 +45,8 @@ export default {
   components: {
     Settings,
     JSONPreview,
-    JobDashboard
+    JobDashboard,
+    ExportDashboard
   },
   computed:{
     ...mapGetters('user', ['getToken'])

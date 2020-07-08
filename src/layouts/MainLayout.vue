@@ -15,7 +15,7 @@
 
          <q-btn
           flat
-          label="BAE Data Faker"
+          label="Test Data Generator"
           aria-label="Menu"
           class="text-h6"
           to="/"
