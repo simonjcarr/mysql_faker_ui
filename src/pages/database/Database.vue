@@ -4,6 +4,7 @@
     <q-tabs
         v-model="tab"
         class="text-accent bg-secondary"
+        v-if="getToken"
       >
         <q-tab name="settings" icon="settings" label="Table Settigs" />
         <q-tab name="json" icon="text_snippet" label="JSON Output" />
@@ -12,7 +13,7 @@
       </q-tabs>
     </div>
 
-      <q-tab-panels v-model="tab" animated class="bg-secondary">
+      <q-tab-panels v-model="tab" animated class="bg-secondary" v-if="getToken">
         <q-tab-panel name="settings">
          <Settings/>
         </q-tab-panel>
@@ -34,6 +35,7 @@
 import Settings from '../../components/Settings'
 import JSONPreview from '../../components/JSONPreview'
 import JobDashboard from '../../components/jobs/JobDashboard'
+import { mapGetters } from 'vuex'
 export default {
   data: () => {
     return {
@@ -44,6 +46,14 @@ export default {
     Settings,
     JSONPreview,
     JobDashboard
+  },
+  computed:{
+    ...mapGetters('user', ['getToken'])
+  },
+  mounted() {
+    if(!this.getToken){
+      this.$router.push('/')
+    }
   }
 }
 </script>

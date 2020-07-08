@@ -2,20 +2,21 @@ import Vue from 'vue'
 import axios from 'axios'
 
 export default ({ store }) => {
-  var token = store.state.user.token
-try {
-  var jwt = token.token
-}catch(err){
-  var jwt = null
-}
-axios.defaults.baseURL = 'http://localhost:3333/api/v1/'
 
-axios.interceptors.request.use((config) => {
-  config.headers = {'Authorization': `Bearer ${jwt}`}
-  return config
-})
+axios.defaults.baseURL = 'http://localhost:3333/api/v1/'
+const token = store.getters['user/getToken']
+
+if(token){
+  setAuthHeader(token)
+}
 Vue.prototype.$axios = axios
 }
+
+export const setAuthHeader = token => {
+  axios.defaults.headers.common['Authorization'] = `Bearer ${token}`
+}
+
+export { axios }
 
 
 

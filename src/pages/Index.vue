@@ -21,11 +21,6 @@ export default {
       name: ''
     }
   },
-  computed: {
-    isLoggedIn: () => {
-      return vm.$q.localStorage.getItem('jwt')? true : false
-    }
-  },
   mounted() {
 
   }

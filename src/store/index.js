@@ -32,7 +32,11 @@ export default function (/* { ssrContext } */) {
         return state.name
       }
     },
-
+    actions:{
+      clearState({ dispatch }){
+        dispatch('database/setActiveDatabase')
+      }
+    },
     modules: {
       database,
       user,

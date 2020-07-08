@@ -84,7 +84,7 @@
 
 import EssentialLink from 'components/EssentialLink.vue'
 import DatabaseList from 'components/database/DatabaseList'
-import { mapActions, mapState } from 'vuex'
+import { mapActions, mapState, mapGetters } from 'vuex'
 export default {
   name: 'MainLayout',
 
@@ -92,19 +92,18 @@ export default {
     DatabaseList
   },
   methods: {
-    ...mapActions('database', ['getDatabases']),
+    ...mapActions('database', ['getDatabases', 'clearDatabases']),
     ...mapActions('user', ['logout']),
     logoutClick(){
       this.logout()
+      this.clearDatabases()
       this.$router.push('/user/login')
     }
   },
 
   computed: {
     ...mapState('user', ['user', 'token']),
-    isLoggedIn() {
-      return this.$q.localStorage.getItem('jwt')? true : false
-    }
+    ...mapGetters('user', ['getToken'])
   },
 
   data () {

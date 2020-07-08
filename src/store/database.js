@@ -17,6 +17,9 @@ export default {
           value: db.id
         }
       })
+    },
+    getDatabaseList(state) {
+      return state.databases
     }
   },
   mutations: {
@@ -25,11 +28,22 @@ export default {
     },
     setActiveDatabase(state, data) {
       state.activeDatabase = data
+    },
+    clearDatabases(state) {
+      state.databases = null
+      state.databases = []
+      state.activeDatabase = null
     }
   },
 
   actions: {
-    getDatabases({ commit, state, dispatch }) {
+    clearDatabases({commit}){
+      commit('clearDatabases')
+    },
+    getDatabases({ commit, state, dispatch, rootState }) {
+      if(!rootState.user.token){
+        return
+      }
       return new Promise((resolve, reject) => {
         this._vm.$axios.get('/database').then((response) => {1
           Promise.map(response.data, (db) => {

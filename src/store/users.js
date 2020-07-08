@@ -1,6 +1,6 @@
-import Vue from 'vue'
-let vm = new Vue()
-import { LocalStorage } from 'quasar'
+import Vue from "vue";
+let vm = new Vue();
+import { axios, setAuthHeader } from '../boot/axios'
 export default {
   namespaced: true,
   state: {
@@ -9,64 +9,72 @@ export default {
   },
   mutations: {
     setToken(state, token) {
-      state.token = token
+      state.token = token;
     },
     setUser(state, user) {
-      state.user = user
+      state.user = user;
     }
   },
-  getters:{
+  getters: {
     getUser(state) {
-      return state.user
+      return state.user;
     },
     getToken(state) {
-      return state.token
+      let token = null
+      try{
+        token = state.token.token;
+      }catch(err){}
+      return token
     }
   },
   actions: {
     register({ commit }, payload) {
       return new Promise((resolve, reject) => {
-        vm.$axios.post('/user/register', {
-          ...payload
-        }).then(({ data }) => {
-          commit('setToken', data.token)
-          commit('setUser', data.user)
-          resolve()
-        }).catch((err) => {
-          err.response.data.map((error) => {
-            vm.$q.notify({
-              type: 'negative',
-              message: error.message
-            })
+        axios
+          .post("/user/register", {
+            ...payload
           })
-          reject('Error logging in')
-        })
-      })
+          .then(({ data }) => {
+            commit("setToken", data.token);
+            commit("setUser", data.user);
+            setAuthHeader(data.token.token)
+            resolve();
+          })
+          .catch(err => {
+            err.response.data.map(error => {
+              vm.$q.notify({
+                type: "negative",
+                message: error.message
+              });
+            });
+            reject("Error logging in");
+          });
+      });
     },
     login({ commit }, payload) {
-      return new Promise((resolve, reject) => {
-        vm.$axios.post('/user/login', {
+      axios
+        .post("/user/login", {
           ...payload
-        }).then(({ data }) => {
-          commit('setToken', data.token)
-          commit('setUser', data.user)
-          LocalStorage.set('token', data.token)
-          LocalStorage.set('user', data.user)
-          return resolve()
-        }).catch((err) => {
-          vm.$q.notify({
-            type: 'negative',
-            message: 'Unable to login with that username and password'
-          })
-          return reject('Unable to login')
         })
-      })
+        .then(({ data }) => {
+          commit("setToken", data.token);
+          commit("setUser", data.user);
+          setAuthHeader(data.token.token)
+        })
+        .catch(err => {
+          vm.$q.notify({
+            type: "negative",
+            message: "Unable to login with that username and password"
+          });
+        });
     },
-    logout({ commit }) {
-      commit('setToken', null)
-      commit('setUser', null)
-      LocalStorage.set('token', null)
-      LocalStorage.set('user', null)
+    logout({ commit, dispatch }) {
+      commit("setToken", null);
+      commit("setUser", null);
+      dispatch('database/clearDatabases', {}, {root:true})
+      dispatch('clearState', {})
+      setAuthHeader(null)
+      vm.router.go("/")
     }
   }
-}
+};

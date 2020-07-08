@@ -14,7 +14,6 @@ export default {
   mounted() {
     ws.connect()
     ws.on('open', () => {
-      console.log("Websocket connection open")
       const job = ws.subscribe('job')
       job.on('ready', () => {
         job.emit('message', 'hello')
@@ -26,6 +25,7 @@ export default {
     ws.on('close', () => {
       console.log("Websocket connection closed")
     })
+
   },
   methods:{
     ...mapMutations('job', ['setMessage'])

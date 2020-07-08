@@ -126,7 +126,6 @@ export default {
       }
     },
     rowClick(e, row) {
-      console.log(row)
       this.newCommand.command = row.command
       this.newCommand.percent = row.percent
       this.newCommand.command_id = row.id

@@ -7,13 +7,15 @@
       :expanded.sync="expanded"
       :selected.sync="selected"
       text-color="accent"
+      v-if="getToken"
     />
   </div>
 </template>
 
 <script>
-import { mapState, mapActions, mapMutations } from 'vuex'
+import { mapState, mapActions, mapMutations, mapGetters } from 'vuex'
 import CreateDatabaseBtn from './CreateDatabaseBtn'
+import Promise from 'bluebird'
 export default {
   data: () => {
     return {
@@ -36,7 +38,7 @@ export default {
     }
   },
   watch: {
-    databases: function(nodes) {
+    "getDatabaseList": function(nodes) {
       this.databaseNodes =   [
         {
           id: 0,
@@ -59,7 +61,9 @@ export default {
   },
   computed: {
     ...mapState('database', ['databases']),
-    ...mapState('user', ['user'])
+    ...mapState('user', ['user', 'token']),
+    ...mapGetters('database', ['getDatabaseList']),
+    ...mapGetters('user', ['getToken'])
   },
   mounted() {
     this.getDatabases()

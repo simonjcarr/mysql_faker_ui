@@ -50,7 +50,7 @@ export default {
       this.selectedTable = row
     },
     addDatabase() {
-      console.log("add database")
+      
     }
   },
   components: {

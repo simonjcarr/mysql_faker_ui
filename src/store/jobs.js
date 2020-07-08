@@ -12,39 +12,41 @@ export default {
   },
   mutations: {
     createJob(state, job){
-      console.log(job)
       if(!state.jobs){
         state.jobs = {}
       }
-      this._vm.$set(state.jobs, `job_${job.job.id}`)
-      state.jobs[`job_${job.job.id}`] = {
-        job_id: job.job.id,
-        status: "queue",
-        logs: [],
-        created_at: job.job.created_at,
-        database_name: job.database.database_name,
-        current_table: ''
-      }
-      state.jobs = state.jobs
+      try{
+        this._vm.$set(state.jobs, `job_${job.job.id}`)
+        state.jobs[`job_${job.job.id}`] = {
+          job_id: job.job.id,
+          status: "queue",
+          logs: [],
+          created_at: job.job.created_at,
+          database_name: job.database.database_name,
+          current_table: ''
+        }
+        state.jobs = state.jobs
+      }catch(err){}
     },
     setMessage(state, message) {
-      if(this.state.user.user.id !== message.user_id){
-        //This message is not for our user
-        return
-      }
-      state.jobs[`job_${message.job_id}`].logs.push(message)
-      //If status is already at error don't overwrite it
-      if(state.jobs[`job_${message.job_id}`].status !== 'error') {
-        state.jobs[`job_${message.job_id}`].status = message.status
-      }
-      state.jobs[`job_${message.job_id}`].current_table = message.table
-      if(message.status == 'complete'){
-        this._vm.$q.notify({type:'positive', message: `Job Completed for database ${message.database_name}`})
-      }
-      if(message.status == 'error'){
-        this._vm.$q.notify({type: 'negative', message: `Job ended in error for databse ${message.database_name}`})
-      }
-
+      try{
+        if(this.state.user.user.id !== message.user_id){
+          //This message is not for our user
+          return
+        }
+        state.jobs[`job_${message.job_id}`].logs.push(message)
+        //If status is already at error don't overwrite it
+        if(state.jobs[`job_${message.job_id}`].status !== 'error') {
+          state.jobs[`job_${message.job_id}`].status = message.status
+        }
+        state.jobs[`job_${message.job_id}`].current_table = message.table
+        if(message.status == 'complete'){
+          this._vm.$q.notify({type:'positive', message: `Job Completed for database ${message.database_name}`})
+        }
+        if(message.status == 'error'){
+          this._vm.$q.notify({type: 'negative', message: `Job ended in error for databse ${message.database_name}`})
+        }
+      }catch(err){}
 
     },
     flushJobs(state) {

@@ -91,7 +91,6 @@ export default {
           confirm_password: this.confirm_password
         })
         .then(({ data }) => {
-          console.log(data);
           this.setToken(data.token);
           this.setUser(data.user);
           this.$q.notify({

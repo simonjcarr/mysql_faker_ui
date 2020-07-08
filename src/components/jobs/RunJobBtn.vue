@@ -29,7 +29,6 @@ export default {
   methods:{
     ...mapActions('job', ['createJob']),
     runJobClick(){
-      console.log(this.databaseId.value)
       this.createJob(this.databaseId.value)
     }
   },
