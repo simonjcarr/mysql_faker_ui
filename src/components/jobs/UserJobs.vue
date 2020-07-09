@@ -1,15 +1,5 @@
 <template>
   <div>
-    <div class="q-mb-sm row">
-      <div class="col-11">
-        <q-card class="bg-accent">
-          <q-card-section>
-            <RunJobBtn />
-          </q-card-section>
-        </q-card>
-
-      </div>
-    </div>
     <div class="row">
       <div class="col-3">
         <q-card class="bg-accent">
@@ -32,7 +22,6 @@
 <script>
 import { mapState } from 'vuex'
 import { mapGetters } from 'vuex'
-import RunJobBtn from './RunJobBtn'
 import JobList from './JobList'
 import JobLog from './JobLog'
 export default {
@@ -50,7 +39,6 @@ export default {
 
   },
   components:{
-    RunJobBtn,
     JobList,
     JobLog
   },

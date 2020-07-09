@@ -3,8 +3,9 @@
     <q-card-section>
       <div class="text-h6">Job List</div>
       <div>Select a job to view detailed logs</div>
-      <div>
-        <q-btn size="sm" color="red" icon="delete" label="Flush Jobs" @click="flushJobsClick" />
+      <div class="flex">
+        <q-btn size="sm" color="primary" icon="play_arrow" label="Create Job" @click="runJobClick" />
+        <q-btn size="sm" class="q-ml-sm" color="red" icon="delete" label="Flush Jobs" @click="flushJobsClick" />
       </div>
     </q-card-section>
     <q-card-section>
@@ -36,10 +37,20 @@ export default {
     }
   },
   computed:{
-    ...mapState('job', ['jobs'])
+    ...mapState('job', ['jobs']),
+    ...mapState('database', ['activeDatabase'])
   },
   methods:{
-    ...mapActions('job', ['flushJobs']),
+    ...mapActions('job', ['flushJobs', 'createJob']),
+    runJobClick(){
+      this.$q.dialog({
+        title: 'Confirm run job',
+        message: 'Please confirm you want to run this job',
+        cancel: true
+      }).onOk(()=>{
+        this.createJob(this.activeDatabase.id)
+      })
+    },
     jobClick(job) {
       this.$emit('selected', job)
       this.activeJobLog = job.job_id

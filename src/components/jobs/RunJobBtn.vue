@@ -1,13 +1,9 @@
 <template>
   <div class="border">
     <q-card class="my-card">
+
       <q-card-section>
-        <div class="text-h6">Create new Job</div>
-        <div>Select a database from the list below and click <span class="text-bold">Create Job</span> to create a new database or replace an existing database</div>
-      </q-card-section>
-      <q-card-section>
-        <q-select style="q-mb-md" v-model="databaseId" :options="databases" label="Select Database" filled />
-        <q-btn :disable="!databaseId" class="q-mt-sm" size="sm" color="primary" icon="play_arrow" label="Create Job" @click="runJobClick" />
+        <q-btn class="q-mt-sm" size="sm" color="primary" icon="play_arrow" label="Create Job" @click="runJobClick" />
       </q-card-section>
     </q-card>
 
@@ -15,7 +11,7 @@
 </template>
 
 <script>
-import { mapActions, mapGetters } from 'vuex'
+import { mapActions, mapGetters, mapState } from 'vuex'
 export default {
   data: () => {
     return{
@@ -24,12 +20,13 @@ export default {
     }
   },
   computed:{
-    ...mapGetters('database', ['getDatabasesForSelect'])
+    ...mapGetters('database', ['getDatabasesForSelect']),
+    ...mapState('database', ['activeDatabase'])
   },
   methods:{
     ...mapActions('job', ['createJob']),
     runJobClick(){
-      this.createJob(this.databaseId.value)
+      this.createJob(this.activeDatabase.id)
     }
   },
   beforeMount(){
