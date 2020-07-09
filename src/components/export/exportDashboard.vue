@@ -26,6 +26,7 @@
                 <q-card class="my-card">
                   <q-card-section>
                     <SelectTables
+                      :edit="editTable"
                       :database_id="database_id"
                     />
                   </q-card-section>
@@ -39,7 +40,7 @@
               <q-card-section>
                 <q-card class="my-card">
                   <q-card-section>
-                    <Editor :database_id="database_id" />
+                    <Editor :edit="editSQL" :database_id="database_id" />
                   </q-card-section>
                 </q-card>
               </q-card-section>
@@ -47,7 +48,7 @@
           </q-card-section>
 
           <q-card-section v-if="database_id">
-            <ExportList :database_id="database_id" />
+            <ExportList @edit="editExport" :database_id="database_id" />
           </q-card-section>
         </q-card>
       </q-card-section>
@@ -64,7 +65,9 @@ export default {
   data: () => {
     return {
       database_id: null,
-      useSQL: false
+      useSQL: false,
+      editTable: null,
+      editSQL: null
     };
   },
   components: {
@@ -76,6 +79,22 @@ export default {
   methods: {
     databaseChanged(db_id) {
       this.database_id = db_id;
+    },
+    editExport(row){
+      this.editTable = null
+      this.editSQL = null
+      if(row.tbl_id){
+        this.useSQL = false
+        setTimeout(()=>{
+          this.editTable = row
+        },200)
+
+      }else{
+        this.useSQL = true
+        setTimeout(()=>{
+          this.editSQL = row
+        },200)
+      }
     }
   }
 };

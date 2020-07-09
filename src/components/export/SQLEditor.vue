@@ -38,10 +38,11 @@
       class="q-mt-sm"
       dense
       color="primary"
-      icon="add"
-      label="Add"
+      :icon="edit?'save':'add'"
+      :label="edit?'Save Changes':'Add'"
       @click="createExport"
     />
+    <q-btn v-if="edit" class="q-mt-sm q-ml-sm" dense color="primary" icon="clear" label="Cancel Edit" @click="cancelEdit" />
   </div>
 </template>
 
@@ -50,7 +51,7 @@ import { mapActions, mapState, mapGetters } from "vuex";
 export default {
   data: () => {
     return {
-      content: "",
+      content: '',
       format: "",
       formatOptions: [
         { label: "CSV", value: "csv" },
@@ -66,10 +67,25 @@ export default {
   computed:{
     ...mapGetters('database', ['getDatabase'])
   },
+  watch:{
+    edit(row){
+      try{
+        this.content = row.sql
+        this.format = row.format
+        this.filename = row.file_name
+        this.active = row.active==1?true:false
+      }catch(err){}
+    }
+  },
   props: {
     database_id: {
       required: true,
       type: Number
+    },
+    edit: {
+      required: false,
+      type: Object,
+      default: null
     }
   },
   components: {
@@ -111,6 +127,7 @@ export default {
       });
       editor.completers = [staticWordCompleter]
       editor['tables'] = this.tables
+      editor.setFontSize("18px")
 
     },
     createExport() {
@@ -121,17 +138,32 @@ export default {
         file_name: this.filename,
         format: this.format.value,
         active: this.active,
-        template: null
+        template: null,
+        edit: this.edit
       });
       this.content = ""
       this.filename = ""
       this.format = ""
+      this.edit = null
     },
     getTables() {
       this.tables = []
       let db = this.getDatabase(this.database_id)
       db[0].tables.map(table=>{
         this.tables.push(table.table_name)
+      })
+    },
+    cancelEdit() {
+      this.$q.dialog({
+        title: 'Confirm Cancel Edit',
+        message: 'Are you sure you want to cancel. You will loose any changes you have made',
+        cancel: true
+      }).onOk(()=>{
+        this.edit = null
+        this.content = ''
+        this.format = null
+        this.filename = ''
+        this.active = true
       })
     }
   },

@@ -1,6 +1,7 @@
 <template>
   <div>
-    <div>Select a table and export format</div>
+    <div class="text-primary text-h6 q-mb-sm">Table selector</div>
+    <div class="q-mb-sm">Configure a table for export</div>
     <q-card dense class="bg-red-1 q-mb-sm" v-if="errors.length > 0">
       <q-card-section>
         <div class="text-red-7 text-bold">Please fix the errors listed below</div>
@@ -11,7 +12,7 @@
     </q-card>
     <form @submit.prevent="addTableOutput">
       <div class="row">
-        <div class="col-3 q-mr-sm">
+        <div class="col-2 q-mr-sm">
           <q-select :rules="[val => !!val || 'Select a table']"  dense v-model="tableExport.tbl_id" :options="tableOptions" label="Select Table" filled />
         </div>
         <div class="col-3 q-mr-sm">
@@ -23,8 +24,9 @@
         <div class="col-1 q-mr-sm">
           <q-toggle  v-model="tableExport.active" color="green" label="Active" />
         </div>
-        <div class="col-1">
-          <q-btn dense color="primary" icon="add" label="Add" type="submit" />
+        <div class="col-2">
+          <q-btn dense color="primary" :icon="edit?'save':'add'" :label="edit?'Save Changes':'Add'" type="submit" />
+          <q-btn v-if="edit" class="q-ml-sm" dense color="primary" icon="clear" label="Cancel" @click="cancelClick" />
         </div>
       </div>
     </form>
@@ -63,10 +65,12 @@ export default {
     tables(storeTables){
       this.tableOptions = []
       if(storeTables.length == 0){
+        console.log("No Data")
         this.options = []
       }else{
         storeTables.map((tbl) => {
           this.tableOptions.push({value: tbl.id, label: tbl.table_name})
+          console.log(tbl)
         })
       }
     },
@@ -82,12 +86,23 @@ export default {
     },
     database_id(value){
       this.getTables(value)
+    },
+    edit(row){
+      this.tableExport.tbl_id = {value: row.tbl_id, label: row.table.table_name}
+      this.tableExport.format = row.format
+      this.tableExport.file_name = row.file_name
+      this.tableExport.active = row.active==1?true:false
     }
   },
   props:{
     database_id: {
       required: true,
       type: Number
+    },
+    edit: {
+      required: false,
+      type: Object,
+      default: null
     }
   },
   computed:{
@@ -117,7 +132,26 @@ export default {
         active: this.tableExport.active,
         file_name: this.tableExport.file_name,
         template: this.tableExport.template,
-        sql: this.tableExport.sql
+        sql: this.tableExport.sql,
+        edit: this.edit
+      })
+      this.edit = null
+      this.tableExport.tbl_id = null
+      this.tableExport.format = null
+      this.tableExport.file_name = null
+      this.tableExport.active = true
+    },
+    cancelClick(){
+      this.$q.dialog({
+        title: 'Confirm cancel edit',
+        message: 'Are you sure you want to cancel the edit? You will loose any changes you have made',
+        cancel: true
+      }).onOk(()=>{
+        this.edit = null
+        this.tableExport.file_name = ''
+        this.tableExport.tbl_id = null
+        this.tableExport.format = null
+        this.tabelExport.active = true
       })
     }
   },
