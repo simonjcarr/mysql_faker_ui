@@ -10,10 +10,10 @@
     </q-card-section>
     <q-card-section>
       <q-list v-if="jobs" bordered="" separator>
-        <q-item :active="activeJobLog == job.job_id" active-class="bg-blue-1" clickable v-ripple v-for="(job, index) in jobs" :key="index" @click="jobClick(job)">
+        <q-item :active="activeJobLog == job.job_id" active-class="bg-blue-1" clickable v-ripple v-for="(job, index) in getDatabaseJobs" :key="index" @click="jobClick(job)">
           <q-item-section>
             <div :class="{'text-black':job.status=='queue', 'text-blue':job.status=='running', 'text-green':job.status=='complete', 'text-red':job.status=='error'}" >
-              {{job.job_id}} - {{job.created_at}} - [{{job.status}}]
+              {{job.created_at}} - [{{job.status}}]
             </div>
             <div>
               <div><span class="text-secondary">Database: </span> <span class="text-primary">{{job.database_name}}</span></div>
@@ -27,7 +27,8 @@
 </template>
 
 <script>
-import { mapState, mapActions } from 'vuex'
+import { mapState, mapActions} from 'vuex'
+import _ from 'lodash'
 import { QDialog } from 'quasar'
 
 export default {
@@ -38,7 +39,10 @@ export default {
   },
   computed:{
     ...mapState('job', ['jobs']),
-    ...mapState('database', ['activeDatabase'])
+    ...mapState('database', ['activeDatabase']),
+    getDatabaseJobs(){
+      return _.filter(this.jobs, (o) => {return o.database_id == this.activeDatabase.id})
+    }
   },
   methods:{
     ...mapActions('job', ['flushJobs', 'createJob']),

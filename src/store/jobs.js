@@ -1,3 +1,4 @@
+import _ from 'lodash'
 export default {
   namespaced: true,
   state:{
@@ -23,6 +24,7 @@ export default {
           logs: [],
           created_at: job.job.created_at,
           database_name: job.database.database_name,
+          database_id: job.database.id,
           current_table: ''
         }
         state.jobs = state.jobs
@@ -42,6 +44,9 @@ export default {
         state.jobs[`job_${message.job_id}`].current_table = message.table
         if(message.status == 'complete'){
           this._vm.$q.notify({type:'positive', message: `Job Completed for database ${message.database_name}`})
+          this._vm.$axios.put(`/database/status/${message.database_id}`, {
+            status: 'Built'
+          }).then(()=>{})
         }
         if(message.status == 'error'){
           this._vm.$q.notify({type: 'negative', message: `Job ended in error for databse ${message.database_name}`})

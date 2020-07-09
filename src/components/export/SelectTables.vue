@@ -65,12 +65,10 @@ export default {
     tables(storeTables){
       this.tableOptions = []
       if(storeTables.length == 0){
-        console.log("No Data")
         this.options = []
       }else{
         storeTables.map((tbl) => {
           this.tableOptions.push({value: tbl.id, label: tbl.table_name})
-          console.log(tbl)
         })
       }
     },

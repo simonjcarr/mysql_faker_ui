@@ -78,7 +78,6 @@ export default {
         cancel: true,
         persistent: true
       }).onOk(() => {
-        console.log(this.selected)
         this.deleteTables(this.selected).then(()=>{
           this.getDatabases().then(()=>{
             this.setActiveDatabase(this.activeDatabase.id)

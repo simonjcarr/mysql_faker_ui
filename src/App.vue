@@ -5,8 +5,7 @@
 </template>
 
 <script>
-import { mapMutations } from 'vuex'
-import { mapState } from 'vuex'
+import { mapMutations, mapState, mapActions } from 'vuex'
 import Ws from '@adonisjs/websocket-client/index'
 const ws = Ws('ws://localhost:3333')
 export default {
@@ -20,6 +19,9 @@ export default {
       })
       job.on('message', (message) => {
         this.setMessage(message)
+        if(message.status == 'complete' || message.status == 'error'){
+          this.setStatusFromMessage(message)
+        }
       })
     })
     ws.on('close', () => {
@@ -28,7 +30,8 @@ export default {
 
   },
   methods:{
-    ...mapMutations('job', ['setMessage'])
+    ...mapMutations('job', ['setMessage']),
+    ...mapActions('database', ['setStatusFromMessage'])
   }
 }
 </script>

@@ -56,10 +56,27 @@ export default {
       state.databases = null
       state.databases = []
       state.activeDatabase = null
+    },
+    setDatabaseStatusFromMessage(state, message){
+      if(message.database_id == state.activeDatabase.id){
+        state.activeDatabase.status = message.status
+      }
+      state.databases.map((db, index)=>{
+        if(db.id == message.database_id){
+          state.databases[index].status = message.status
+        }
+      })
     }
   },
 
   actions: {
+    setStatusFromMessage({ commit }, message) {
+      this._vm.$axios.put(`/database/status/${message.database_id}`, {
+        status: message.status
+      }).then(()=>{
+        commit('setDatabaseStatusFromMessage', message)
+      })
+    },
     clearDatabases({commit}){
       commit('clearDatabases')
     },

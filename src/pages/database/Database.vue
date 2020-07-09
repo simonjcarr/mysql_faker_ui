@@ -12,6 +12,9 @@
         <q-tab name="data" icon="cloud_download" label="Data Export" />
       </q-tabs>
     </div>
+    <div class="q-ml-lg">
+      <DatabaseStatusBar />
+    </div>
 
       <q-tab-panels v-model="tab" animated class="bg-secondary" v-if="getToken">
         <q-tab-panel name="settings">
@@ -35,6 +38,7 @@ import Settings from '../../components/Settings'
 import JSONPreview from '../../components/JSONPreview'
 import JobDashboard from '../../components/jobs/JobDashboard'
 import ExportDashboard from '../../components/export/ExportDashboard'
+import DatabaseStatusBar from '../../components/database/DatabaseStatusBar'
 import { mapGetters } from 'vuex'
 export default {
   data: () => {
@@ -46,7 +50,8 @@ export default {
     Settings,
     JSONPreview,
     JobDashboard,
-    ExportDashboard
+    ExportDashboard,
+    DatabaseStatusBar
   },
   computed:{
     ...mapGetters('user', ['getToken'])
