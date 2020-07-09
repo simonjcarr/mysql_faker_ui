@@ -72,9 +72,9 @@ export default {
       commit("setToken", null);
       commit("setUser", null);
       dispatch('database/clearDatabases', {}, {root:true})
-      dispatch('clearState', {})
+      // dispatch('clearState', {})
       setAuthHeader(null)
-      vm.router.go("/")
+      // vm.router.go("/")
     }
   }
 };

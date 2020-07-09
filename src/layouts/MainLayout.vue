@@ -15,7 +15,7 @@
 
          <q-btn
           flat
-          label="Test Data Generator"
+          :label='toolbarTitle'
           aria-label="Menu"
           class="text-h6"
           to="/"
@@ -85,6 +85,7 @@
 import EssentialLink from 'components/EssentialLink.vue'
 import DatabaseList from 'components/database/DatabaseList'
 import { mapActions, mapState, mapGetters } from 'vuex'
+import { axios, setAuthHeader } from '../boot/axios'
 export default {
   name: 'MainLayout',
 
@@ -96,18 +97,27 @@ export default {
     ...mapActions('user', ['logout']),
     logoutClick(){
       this.logout()
-      this.clearDatabases()
       this.$router.push('/user/login')
     }
   },
-
+  watch:{
+    activeDatabase(db){
+      if(db){
+        this.toolbarTitle = `TDG - ${db.database_name}`
+      }else{
+        this.toolbarTitle = 'TDG'
+      }
+    }
+  },
   computed: {
     ...mapState('user', ['user', 'token']),
-    ...mapGetters('user', ['getToken'])
+    ...mapGetters('user', ['getToken']),
+    ...mapState('database', ['activeDatabase'])
   },
 
   data () {
     return {
+      toolbarTitle: 'TDG',
       leftDrawerOpen: false,
       essentialLinks: [
         {
