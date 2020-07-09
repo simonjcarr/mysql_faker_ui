@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div class="q-mb-sm text-h5 text-accent text-bold">JSON Ouput: <span class="text-primary">{{activeDatabase.database_name}}</span></div>
+    <div class="q-mb-sm text-h5 text-accent text-bold">JSON Database Configuration</div>
     <q-card class="bg-accent">
       <q-card-section>
         <q-markdown

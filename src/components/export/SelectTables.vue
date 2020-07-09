@@ -25,8 +25,8 @@
           <q-toggle  v-model="tableExport.active" color="green" label="Active" />
         </div>
         <div class="col-2">
-          <q-btn dense color="primary" :icon="edit?'save':'add'" :label="edit?'Save Changes':'Add'" type="submit" />
-          <q-btn v-if="edit" class="q-ml-sm" dense color="primary" icon="clear" label="Cancel" @click="cancelClick" />
+          <q-btn dense color="primary" :icon="editRow?'save':'add'" :label="editRow?'Save Changes':'Add'" type="submit" />
+          <q-btn v-if="editRow" class="q-ml-sm" dense color="primary" icon="clear" label="Cancel" @click="cancelClick" />
         </div>
       </div>
     </form>
@@ -49,7 +49,6 @@ export default {
       selectedOutput: null,
       selectedFileName: null,
       tableExport: {
-        database_id: null,
         tbl_id: null,
         sql: null,
         format: null,
@@ -57,7 +56,8 @@ export default {
         file_name: null,
         active: true
       },
-      errors: []
+      errors: [],
+      editRow: false
 
     }
   },
@@ -84,10 +84,17 @@ export default {
         this.tableExport.file_name = this.tableExport.tbl_id.label + "." + value.label.toLowerCase()
       }catch(err){}
     },
-    database_id(value){
-      this.getTables(value)
+    activeDatabase(value){
+      this.getTables(value.id)
+      this.tableExport.format = null
+      this.tableExport.tbl_id = null
+      this.tableExport.file_name = null
+      this.tableExport.active = true
+      this.edit = null
+
     },
     edit(row){
+      this.editRow = true
       this.tableExport.tbl_id = {value: row.tbl_id, label: row.table.table_name}
       this.tableExport.format = row.format
       this.tableExport.file_name = row.file_name
@@ -95,10 +102,6 @@ export default {
     }
   },
   props:{
-    database_id: {
-      required: true,
-      type: Number
-    },
     edit: {
       required: false,
       type: Object,
@@ -106,7 +109,8 @@ export default {
     }
   },
   computed:{
-    ...mapState('data_export', ['tables'])
+    ...mapState('data_export', ['tables']),
+    ...mapState('database', ['activeDatabase'])
   },
   methods:{
     ...mapActions('data_export', ['getTables', 'createTableOutput']),
@@ -126,7 +130,7 @@ export default {
         return
       }
       this.createTableOutput({
-        database_id: this.database_id,
+        database_id: this.activeDatabase.id,
         tbl_id: this.tableExport.tbl_id.value,
         format: this.tableExport.format.value,
         active: this.tableExport.active,
@@ -135,7 +139,7 @@ export default {
         sql: this.tableExport.sql,
         edit: this.edit
       })
-      this.edit = null
+      this.editRow = false
       this.tableExport.tbl_id = null
       this.tableExport.format = null
       this.tableExport.file_name = null
@@ -156,7 +160,7 @@ export default {
     }
   },
   mounted() {
-    this.getTables(this.database_id)
+    this.getTables(this.activeDatabase.id)
     this.tableExport.database_id = this.database_id
   }
 }

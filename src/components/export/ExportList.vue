@@ -45,19 +45,14 @@ export default {
       selected: []
     }
   },
-  props:{
-    database_id: {
-      required: true,
-      type: Number
-    }
-  },
   watch:{
-    database_id(value){
-      this.getExports(value)
+    activeDatabase(value){
+      this.getExports(value.id)
     }
   },
   computed:{
-    ...mapState('data_export', ['exports'])
+    ...mapState('data_export', ['exports']),
+    ...mapState('database', ['activeDatabase'])
   },
   methods:{
     ...mapActions('data_export', ['getExports','deleteExports']),
@@ -70,7 +65,7 @@ export default {
     }
   },
   mounted() {
-    this.getExports(this.database_id)
+    this.getExports(this.activeDatabase.id)
   }
 }
 </script>

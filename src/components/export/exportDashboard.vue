@@ -1,17 +1,7 @@
 <template>
   <div>
-    <q-card class="bg-accent q-mb-sm">
-      <q-card-section>
-        <q-card class="my-card">
-          <q-card-section>
-            <SelectDatabaseBtn @databaseChanged="databaseChanged" />
-          </q-card-section>
-        </q-card>
-      </q-card-section>
-    </q-card>
-
     <q-card class="bg-accent">
-      <q-card-section v-if="database_id">
+      <q-card-section>
         <q-card class="my-card">
           <q-card-section>
             <div class="text-h6">Select data to export</div>
@@ -20,14 +10,13 @@
             </div>
           </q-card-section>
 
-          <q-card-section v-if="database_id && !useSQL">
+          <q-card-section v-if="!useSQL">
             <q-card class="bg-accent">
               <q-card-section>
                 <q-card class="my-card">
                   <q-card-section>
                     <SelectTables
                       :edit="editTable"
-                      :database_id="database_id"
                     />
                   </q-card-section>
                 </q-card>
@@ -35,20 +24,20 @@
             </q-card>
           </q-card-section>
 
-          <q-card-section v-if="database_id && useSQL">
+          <q-card-section v-if="useSQL">
             <q-card class="bg-accent">
               <q-card-section>
                 <q-card class="my-card">
                   <q-card-section>
-                    <Editor :edit="editSQL" :database_id="database_id" />
+                    <Editor :edit="editSQL" />
                   </q-card-section>
                 </q-card>
               </q-card-section>
             </q-card>
           </q-card-section>
 
-          <q-card-section v-if="database_id">
-            <ExportList @edit="editExport" :database_id="database_id" />
+          <q-card-section>
+            <ExportList @edit="editExport" />
           </q-card-section>
         </q-card>
       </q-card-section>
@@ -57,21 +46,34 @@
 </template>
 
 <script>
-import SelectDatabaseBtn from "../database/SelectDatabaseBtn";
 import Editor from "./SQLEditor";
 import SelectTables from "./SelectTables";
 import ExportList from "./ExportList";
+import { mapState } from 'vuex'
 export default {
   data: () => {
     return {
+      editorKey: 0,
       database_id: null,
       useSQL: false,
       editTable: null,
       editSQL: null
     };
   },
+  computed:{
+    ...mapState('database', ['activeDatabase'])
+  },
+  watch:{
+    activeDatabase(value){
+      if(this.useSQL){
+        this.useSQL = false
+        setTimeout(()=>{
+          this.useSQL = true
+        }, 100)
+      }
+    }
+  },
   components: {
-    SelectDatabaseBtn,
     Editor,
     SelectTables,
     ExportList

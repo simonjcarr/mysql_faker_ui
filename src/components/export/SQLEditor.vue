@@ -38,11 +38,11 @@
       class="q-mt-sm"
       dense
       color="primary"
-      :icon="edit?'save':'add'"
-      :label="edit?'Save Changes':'Add'"
+      :icon="editRow?'save':'add'"
+      :label="editRow?'Save Changes':'Add'"
       @click="createExport"
     />
-    <q-btn v-if="edit" class="q-mt-sm q-ml-sm" dense color="primary" icon="clear" label="Cancel Edit" @click="cancelEdit" />
+    <q-btn v-if="editRow" class="q-mt-sm q-ml-sm" dense color="primary" icon="clear" label="Cancel Edit" @click="cancelEdit" />
   </div>
 </template>
 
@@ -51,6 +51,7 @@ import { mapActions, mapState, mapGetters } from "vuex";
 export default {
   data: () => {
     return {
+      componentKey: 0,
       content: '',
       format: "",
       formatOptions: [
@@ -61,14 +62,17 @@ export default {
       ],
       filename: "",
       active: true,
-      tables: []
+      tables: [],
+      editRow: false
     };
   },
   computed:{
-    ...mapGetters('database', ['getDatabase'])
+    ...mapGetters('database', ['getDatabase']),
+    ...mapState('database', ['activeDatabase'])
   },
   watch:{
     edit(row){
+      this.editRow = true
       try{
         this.content = row.sql
         this.format = row.format
@@ -78,10 +82,6 @@ export default {
     }
   },
   props: {
-    database_id: {
-      required: true,
-      type: Number
-    },
     edit: {
       required: false,
       type: Object,
@@ -104,13 +104,6 @@ export default {
                 value: word,
                 meta: "static"
               };
-            }),
-            ...session.$mode.$highlightRules.$keywordList.map(function(word) {
-              return {
-                caption: word,
-                value: word,
-                meta: "keyword"
-              };
             })
           ]);
         }
@@ -132,7 +125,7 @@ export default {
     },
     createExport() {
       this.createTableOutput({
-        database_id: this.database_id,
+        database_id: this.activeDatabase.id,
         tbl_id: null,
         sql: this.content,
         file_name: this.filename,
@@ -144,11 +137,11 @@ export default {
       this.content = ""
       this.filename = ""
       this.format = ""
-      this.edit = null
+      this.editRow = false
     },
     getTables() {
       this.tables = []
-      let db = this.getDatabase(this.database_id)
+      let db = this.getDatabase(this.activeDatabase.id)
       db[0].tables.map(table=>{
         this.tables.push(table.table_name)
       })

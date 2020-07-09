@@ -4,7 +4,6 @@
 
       <div class="row">
         <div class="col-3">
-          <div v-if="activeDatabase" class="text-h5 q-mb-sm text-accent text-bold">Database: <span class="text-primary">{{activeDatabase.database_name}}</span></div>
           <TableList v-if="activeDatabase" @tableSelected="tableSelected" :dbID="activeDatabase.id" />
         </div>
         <div class="col-1"></div>
@@ -50,7 +49,7 @@ export default {
       this.selectedTable = row
     },
     addDatabase() {
-      
+
     }
   },
   components: {
