@@ -17,6 +17,9 @@
         </div>
         <div class="col-3 q-mr-sm">
           <q-select :rules="[val => !!val || 'Select export type']" dense v-model="tableExport.format" :options="outputOptions" label="Export Type" filled />
+          <div v-if="fieldFormatValue == 'mysql'">
+            <q-input v-model="tableExport.sql_insert_table" type="text" label="Table Name" />
+          </div>
         </div>
         <div class="col-3 q-mr-sm">
           <q-input :rules="[val => !!val || 'Provide a filename to export into']" dense v-model="tableExport.file_name" type="text" label="Filename" />
@@ -54,7 +57,8 @@ export default {
         format: null,
         template: null,
         file_name: null,
-        active: true
+        active: true,
+        sql_insert_table: null
       },
       errors: [],
       editRow: false
@@ -85,6 +89,7 @@ export default {
     activeDatabase(value){
       this.getTables(value.id)
       this.tableExport.format = null
+      this.tableExport.sql_insert_table = null
       this.tableExport.tbl_id = null
       this.tableExport.file_name = null
       this.tableExport.active = true
@@ -94,8 +99,9 @@ export default {
     edit(row){
       this.editRow = true
       this.tableExport.tbl_id = {value: row.tbl_id, label: row.table.table_name}
-      this.tableExport.format = row.format
+      this.tableExport.format = {value: row.format, label: row.format}
       this.tableExport.file_name = row.file_name
+      this.tableExport.sql_insert_table = row.sql_insert_table
       this.tableExport.active = row.active==1?true:false
     }
   },
@@ -108,7 +114,14 @@ export default {
   },
   computed:{
     ...mapState('data_export', ['tables']),
-    ...mapState('database', ['activeDatabase'])
+    ...mapState('database', ['activeDatabase']),
+    fieldFormatValue(){
+      try{
+        return this.tableExport.format.value
+      }catch(err){
+        return null
+      }
+    }
   },
   methods:{
     ...mapActions('data_export', ['getTables', 'createTableOutput']),
@@ -131,6 +144,7 @@ export default {
         database_id: this.activeDatabase.id,
         tbl_id: this.tableExport.tbl_id.value,
         format: this.tableExport.format.value,
+        sql_insert_table: this.tableExport.sql_insert_table,
         active: this.tableExport.active,
         file_name: this.tableExport.file_name,
         template: this.tableExport.template,
@@ -140,6 +154,7 @@ export default {
       this.editRow = false
       this.tableExport.tbl_id = null
       this.tableExport.format = null
+      this.tableExport.sql_insert_table = null
       this.tableExport.file_name = null
       this.tableExport.active = true
     },

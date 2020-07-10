@@ -1,6 +1,6 @@
 <template>
   <div>
-    <q-card class="my-card" v-if="job">
+    <q-card class="my-card">
 
       <q-card-section>
         <div class="text-h6">Job Status:
@@ -15,7 +15,7 @@
       </q-card-section>
       <q-card-section>
         <q-list bordered separator>
-          <q-item v-for="(log, index) in job.logs" :key="index" :class="{'bg-red text-white':log.status=='error', 'bg-green-1 text-green-10':log.status!='error'}" class="q-pa-sm text-body2">
+          <q-item v-for="(log, index) in logs" :key="index" :class="{'bg-red text-white':log.status=='error', 'bg-green-1 text-green-10':log.status!='error'}" class="q-pa-sm text-body2">
             <q-item-section >
               <div class="" v-if="log.status !== 'complete'">
                 <span class="text-bold q-mr-md">D: {{log.database_name}}</span> <span class="text-bold">T: {{log.table}}</span>
@@ -30,23 +30,46 @@
 </template>
 
 <script>
-import { mapGetters } from 'vuex'
+import { mapGetters, mapState } from 'vuex'
 export default {
   data: () => {
-    return {}
+    return {
+      logs:[]
+    }
   },
   computed:{
-    ...mapGetters('job'['getJobLogs'])
+    ...mapGetters('job'['getJobLogs']),
+    ...mapState('job', ['jobs'])
   },
   props:{
     job:{
       required: true
     }
   },
-  mounted() {
-    if(this.job){
-      this.getJobLogs(this.job.jobId)
+  watch:{
+    job(jobs){
+
+      try{
+        this.logs = this.job.logs
+      }catch(err){
+        this.logs = []
+      }
+    },
+    jobs(jobs){
+      this.logs = []
+      if(!jobs){
+        this.logs = []
+      }
     }
+
+  },
+  mounted() {
+    try{
+      this.logs = this.job.logs
+    }catch(err){
+      this.logs = []
+    }
+
   }
 }
 </script>

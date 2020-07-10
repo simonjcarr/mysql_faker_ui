@@ -20,6 +20,9 @@
           label="Output Format"
           filled
         />
+        <div v-if="getFormatValue=='mysql'">
+          <q-input dense v-model="sql_insert_table" type="text" label="Table Name" />
+        </div>
       </div>
       <div class="col-4 q-mr-sm">
         <q-input
@@ -54,6 +57,7 @@ export default {
       componentKey: 0,
       content: '',
       format: "",
+      sql_insert_table: "",
       formatOptions: [
         { label: "CSV", value: "csv" },
         { label: "XML", value: "xml" },
@@ -68,7 +72,14 @@ export default {
   },
   computed:{
     ...mapGetters('database', ['getDatabase']),
-    ...mapState('database', ['activeDatabase'])
+    ...mapState('database', ['activeDatabase']),
+    getFormatValue(){
+      try{
+        return this.format.value
+      }catch(err){
+        return null
+      }
+    }
   },
   watch:{
     edit(row){
@@ -130,6 +141,7 @@ export default {
         sql: this.content,
         file_name: this.filename,
         format: this.format.value,
+        sql_insert_table: this.sql_insert_table,
         active: this.active,
         template: null,
         edit: this.edit
@@ -137,6 +149,7 @@ export default {
       this.content = ""
       this.filename = ""
       this.format = ""
+      this.sql_insert_table = ""
       this.editRow = false
     },
     getTables() {
@@ -155,6 +168,7 @@ export default {
         this.edit = null
         this.content = ''
         this.format = null
+        this.sql_insert_table = null
         this.filename = ''
         this.active = true
       })

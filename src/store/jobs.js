@@ -6,7 +6,7 @@ export default {
   },
   getters:{
     getJobLogs(state){
-      return job_id => state.jobs.logs.filter(log => {
+      return (job_id) => state.jobs.logs.filter(log => {
         return log.job_id == job_id
       })
     }
@@ -59,7 +59,16 @@ export default {
     }
   },
   actions:{
-    createJob({ commit, rootState }, databaseId){
+    createJob({ commit, rootState, state }, databaseId){
+      let runningJobs = _.filter(state.jobs, (o) => {
+        return o.status == 'running' && o.database_id == databaseId
+      })
+      console.log(runningJobs)
+      if(runningJobs.length > 0) {
+        this._vm.$q.notify({type: 'warning', message: 'A job is already running for this database. Please wait for it to complete.'})
+        return false
+      }
+
       this._vm.$axios.post(`/job`, {
         database_id: databaseId,
         user_id: rootState.database.activeDatabase.user_id

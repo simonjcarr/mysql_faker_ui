@@ -9,7 +9,7 @@
         </q-card>
       </div>
       <div class="q-ml-md col-8">
-        <q-card class="bg-accent" v-if="selected">
+        <q-card class="bg-accent" v-if="jobs && selected">
           <q-card-section>
             <JobLog :job="selected" />
           </q-card-section>
@@ -44,7 +44,11 @@ export default {
   },
   methods:{
     jobSelected(job){
-      this.selected = job
+
+      this.selected = null
+      setTimeout(()=>{
+        this.selected = job
+      }, 200)
     }
   }
 }
