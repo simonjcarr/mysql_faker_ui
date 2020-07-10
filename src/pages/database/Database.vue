@@ -37,7 +37,7 @@
 import Settings from '../../components/Settings'
 import JSONPreview from '../../components/JSONPreview'
 import JobDashboard from '../../components/jobs/JobDashboard'
-import ExportDashboard from '../../components/export/ExportDashboard'
+import ExportDashboard from '../../components/export/exportDashboard'
 import DatabaseStatusBar from '../../components/database/DatabaseStatusBar'
 import { mapGetters } from 'vuex'
 export default {
