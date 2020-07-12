@@ -22,6 +22,7 @@ export default {
           job_id: job.job.id,
           status: "queue",
           logs: [],
+          files:[],
           created_at: job.job.created_at,
           database_name: job.database.database_name,
           database_id: job.database.id,
@@ -47,6 +48,11 @@ export default {
           this._vm.$axios.put(`/database/status/${message.database_id}`, {
             status: 'Built'
           }).then(()=>{})
+          this._vm.$axios.get(`/export/file/download/zip/:${message.database_id}`).then(({ data }) => {
+            data.map(file => {
+              this.jobs[`job_${message.job_id}`].files.push(file)
+            })
+          })
         }
         if(message.status == 'error'){
           this._vm.$q.notify({type: 'negative', message: `Job ended in error for databse ${message.database_name}`})

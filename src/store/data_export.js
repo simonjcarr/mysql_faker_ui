@@ -14,7 +14,6 @@ export default {
   },
   actions:{
     getTables({ commit }, database_id) {
-
       this._vm.$axios.get(`/table/${database_id}`).then(({ data }) => {
         commit('setTables', data)
       })
