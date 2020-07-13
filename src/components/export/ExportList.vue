@@ -127,7 +127,7 @@ export default {
     downloadFile(row) {
       console.log(row)
       axios({
-        url: `http://localhost:3333/api/v1/export/file/download/${row.file.id}`,
+        url: `${process.env.API_URL}/api/v1/export/file/download/${row.file.id}`,
         method: "GET",
         responseType: "blob"
       }).then(response => {
@@ -143,7 +143,7 @@ export default {
     },
     downloadZip(){
       axios({
-        url: `http://localhost:3333/api/v1/export/file/download/zip/${this.activeDatabase.id}`,
+        url: `${process.env.API_URL}/api/v1/export/file/download/zip/${this.activeDatabase.id}`,
         method: "GET",
         responseType: "blob"
       }).then(response => {

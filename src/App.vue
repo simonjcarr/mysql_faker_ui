@@ -5,9 +5,10 @@
 </template>
 
 <script>
+
 import { mapMutations, mapState, mapActions } from 'vuex'
 import Ws from '@adonisjs/websocket-client/index'
-const ws = Ws('ws://localhost:3333')
+const ws = Ws(process.env.WS_URL)
 export default {
   name: 'App',
   mounted() {

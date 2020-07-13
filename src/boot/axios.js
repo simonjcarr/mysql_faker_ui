@@ -1,9 +1,8 @@
 import Vue from 'vue'
 import axios from 'axios'
-
 export default ({ store }) => {
 
-axios.defaults.baseURL = 'http://localhost:3333/api/v1/'
+axios.defaults.baseURL = `${process.env.API_URL}/api/v1/`
 const token = store.getters['user/getToken']
 
 if(token){
