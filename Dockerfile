@@ -2,6 +2,7 @@
 FROM node:12.18.1 as develop-stage
 WORKDIR /app
 COPY package*.json ./
+RUN npm config set registry http://registry.npmjs.org/
 RUN npm install
 RUN npm i -g @quasar/cli
 COPY . .
