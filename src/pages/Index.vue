@@ -3,7 +3,7 @@
     <div >
       <div class="text-h1 text-accent text-bold"><span class="">Test</span>  <span class="text-primary"> Data</span> Generator</div>
       <div class="q-mt-xl">
-        <q-btn color="primary" size="xl" label="Get Started" to="/database" />
+        <q-btn color="primary" size="xl" label="Get Started" @click="getStartedClick" />
       </div>
     </div>
 
@@ -19,6 +19,12 @@ export default {
   data: () => {
     return {
       name: ''
+    }
+  },
+  methods:{
+    getStartedClick(){
+      console.log("I am here")
+      window.open("https://github.com/simonjcarr/mysql_faker", "_blank")
     }
   },
   mounted() {
