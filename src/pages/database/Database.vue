@@ -38,7 +38,7 @@
 </template>
 
 <script>
-import DatabaseSettings from '../../components/database/databaseSettings'
+import DatabaseSettings from '../../components/database/DatabaseSettings'
 import Settings from '../../components/Settings'
 import JSONPreview from '../../components/JSONPreview'
 import JobDashboard from '../../components/jobs/JobDashboard'
