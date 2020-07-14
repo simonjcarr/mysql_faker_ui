@@ -149,6 +149,16 @@ export default {
           return reject()
         })
       })
+    },
+    saveActiveDatabaseSettings({ state, dispatch, commit }, settings){
+      this._vm.$axios.put(`/database/${state.activeDatabase.id}`, {
+        database_name: settings.database_name
+      }).then(({data}) => {
+        dispatch('getDatabases')
+        this._vm.$q.notify({type: 'positive', message: 'Database settings saved'})
+      }).catch((err) => {
+        this._vm.$q.notify({type: 'negative', message: `Error saving database settings: ${err}`})
+      })
     }
   }
 }

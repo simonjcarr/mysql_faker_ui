@@ -4,14 +4,14 @@
       <q-card-section>
         <q-card>
           <q-card-section class="text-primary text-h6">
-            Database Settings
+            <span class="text-accent">Database Settings </span> <span class="text-bold text-primary">{{activeDatabase.database_name}}</span>
           </q-card-section>
           <q-card-section>
             <q-input v-model="databaseName" type="text" label="Database name" />
             <q-btn class="q-mt-sm" color="primary" icon="check" label="Save" @click="saveSettingsClick" />
           </q-card-section>
-          <q-card-section>
-            <q-btn class="text-red" color="yellow" icon="delete" label="Delete Database" @click="deleteDatabaseClick" />
+          <q-card-section class="text-right">
+            <q-btn size="sm" class="text-red" color="yellow" icon="delete" label="Delete Database" @click="deleteDatabaseClick" />
           </q-card-section>
         </q-card>
       </q-card-section>
@@ -36,9 +36,11 @@ export default {
     ...mapState('database', ['activeDatabase'])
   },
   methods:{
-    ...mapActions('database', ['deleteActiveDatabase']),
+    ...mapActions('database', ['deleteActiveDatabase', 'saveActiveDatabaseSettings']),
     saveSettingsClick(){
-
+      this.saveActiveDatabaseSettings({
+        database_name: this.databaseName
+      })
     },
     deleteDatabaseClick(){
       this.$q.dialog({
