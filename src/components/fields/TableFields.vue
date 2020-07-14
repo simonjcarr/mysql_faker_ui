@@ -17,7 +17,6 @@
           selection="multiple"
           :selected.sync="selected"
           :filter="filter"
-          @row-click="rowClick"
           virtual-scroll
           :pagination.sync="pagination"
           :rows-per-page-options="[0]"
@@ -30,6 +29,16 @@
             <q-btn v-if="selected.length > 0" color="red" size="sm" icon="delete" label="Delete Selected" @click="deleteSelected" />
           </div>
         </template>
+
+        <template v-slot:body-cell-edit="props">
+          <q-td :props="props">
+            <div class="flex">
+              <EditFieldBtn :field="props.row" />
+              <q-btn class="q-ml-sm" size="sm" dense color="primary" icon="functions" label="" @click="editFakeClick(props.row)" />
+            </div>
+          </q-td>
+        </template>
+
         </q-table>
         <q-dialog v-model="showEditFieldDialog" persistent>
           <q-card>
@@ -53,6 +62,7 @@
 
 <script>
 import EditTableBtn from '../tables/EditTableBtn'
+import EditFieldBtn from './EditFieldBtn'
 import AddFieldBtn from '../fields/AddFieldBtn'
 import FakeCommandEditor from '../fields/FakeCommandEditor'
 import { mapState, mapActions } from 'vuex'
@@ -62,6 +72,7 @@ export default {
       tableData: null,
       fieldData: null,
       columns: [
+        { name: 'edit', label: '', field: ""},
         { name: 'field_name', label: 'Field', field: row => row.name, sortable: true},
         { name: 'data_type', label: 'Type', field: row=> row.data_type, sortable: true},
         { name: 'size', label: 'Size', field: row=> row.size, sortable: true},
@@ -86,21 +97,25 @@ export default {
   },
   components:{
     EditTableBtn,
+    EditFieldBtn,
     AddFieldBtn,
     FakeCommandEditor
   },
   methods:{
     ...mapActions('database', ['getDatabases']),
     ...mapActions('table', ['deleteFields']),
-    rowClick(e, row) {
-      this.editField = row
-      this.showEditFieldDialog = true
-    },
     commandsUpdated(){
       this.getDatabases()
     },
     deleteSelected() {
       this.deleteFields(this.selected)
+    },
+    editFakeClick(row) {
+      this.editField = row
+      this.showEditFieldDialog = true
+    },
+    editFieldClick(row){
+
     }
   }
 }

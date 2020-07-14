@@ -41,7 +41,8 @@ export default {
         nullable: false,
         primary_key: false,
         idx: false,
-        description: null
+        description: null,
+        id: null
       },
       dataTypes: [
         'CHAR',
@@ -72,14 +73,38 @@ export default {
     ...mapState('table', ['activeTable'])
   },
   methods: {
-    ...mapActions('table', ['addField']),
+    ...mapActions('table', ['addField', 'updateField']),
     onSubmit() {
-      this.addField(this.field)
+      console.log(this.field)
+      if(this.editField){
+        this.updateField(this.field)
+      }else{
+        this.addField(this.field)
+      }
       this.$emit('close')
     }
   },
+  props:{
+    editField:{
+      required: false,
+      type: Object
+    }
+  },
   mounted() {
+
     this.field.tbl_id = this.activeTable.id
+    if(this.editField){
+      console.log(this.editField)
+      this.field.name = this.editField.name
+      this.field.data_type = this.editField.data_type
+      this.field.size = this.editField.size
+      this.field.auto_increment = this.editField.auto_increment==1?true:false
+      this.field.nullable = this.editField.nullable==1?true:false
+      this.field.primary_key = this.editField.primary_key==1?true:false
+      this.field.idx = this.editField.idx==1?true:false
+      this.field.description = this.editField.description
+      this.field.id = this.editField.id
+    }
 
   }
 }

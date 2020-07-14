@@ -51,6 +51,17 @@ export default {
       })
     },
 
+
+    updateField({ dispatch }, field){
+      console.log("In the store")
+      this._vm.$axios.put(`/field/${field.id}`, {
+        ...field
+      }).then(()=>{
+        this._vm.$q.notify({type:'positive', message: 'Field updated'})
+        dispatch('database/getDatabases', {},{root:true})
+      }).catch(()=>{})
+    },
+
     addField({ dispatch }, field){
       this._vm.$axios.post('/field', {
         ...field
