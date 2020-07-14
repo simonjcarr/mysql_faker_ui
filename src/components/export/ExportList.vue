@@ -43,7 +43,7 @@
               <template v-slot:body-cell-edit="props">
                 <q-td :props="props">
                   <div>
-                    <q-btn v-if="props.row.file" size="sm" dense color="primary" icon="edit" label="" @click="editClick(props.row)" />
+                    <q-btn size="sm" dense color="primary" icon="edit" label="" @click="editClick(props.row)" />
                   </div>
                 </q-td>
               </template>
