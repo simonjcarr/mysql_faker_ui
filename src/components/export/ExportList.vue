@@ -40,6 +40,13 @@
                   </div>
                 </q-td>
               </template>
+              <template v-slot:body-cell-edit="props">
+                <q-td :props="props">
+                  <div>
+                    <q-btn v-if="props.row.file" size="sm" dense color="primary" icon="edit" label="" @click="editClick(props.row)" />
+                  </div>
+                </q-td>
+              </template>
             </q-table>
           </q-card-section>
         </q-card>
@@ -56,6 +63,11 @@ export default {
   data: () => {
     return {
       columns: [
+        {
+          name: 'edit',
+          label: '',
+          field: ''
+        },
         {
           name: "source",
           label: "Source",
@@ -111,7 +123,7 @@ export default {
       this.deleteExports(this.selected);
       this.selected = [];
     },
-    onRowClick(e, row) {
+    editClick(row) {
       this.$emit("edit", row);
     },
     getFileStatus(row) {
