@@ -33,10 +33,10 @@
                   </div>
                 </div>
               </template>
-              <template v-slot:body-cell-status="props">
+              <template v-slot:body-cell-download="props">
                 <q-td :props="props">
                   <div>
-                    <q-btn v-if="props.row.file" size="sm" dense color="primary" icon="cloud_download" label="Download" @click="downloadFile(props.row)" />
+                    <q-btn v-if="props.row.file" size="sm" dense color="primary" icon="cloud_download" label="" @click="downloadFile(props.row)" />
                   </div>
                 </q-td>
               </template>
@@ -88,8 +88,8 @@ export default {
           sortable: true
         },
         {
-          name: "status",
-          label: "Status",
+          name: "download",
+          label: "Download",
           field: "",
           sortable: true
         },
