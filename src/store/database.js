@@ -7,6 +7,9 @@ export default {
     activeDatabase: null
   },
   getters:{
+    getActiveDatabase(state) {
+      return state.activeDatabase
+    },
     getActiveTables() {
       return activeDatabase.tables
     },
@@ -110,10 +113,19 @@ export default {
           }
       })
     },
+    deleteActiveDatabase({state, commit, dispatch}){
+      this._vm.$axios.delete(`/database/${state.activeDatabase.id}`).then((response)=>{
+        this._vm.$q.notify({type:'positive', message: 'Database ' + state.activeDatabase.database_name + ' has been deleted'})
+        commit('setActiveDatabase', null)
+        dispatch("getDatabases")
+      }).catch((err)=>{
+        this._vm.$q.notify({type:'negative', message: 'Error deleting database ' + state.activeDatabase.database_name})
+      })
+    },
     deleteDatabases(databases) {
       databases.map((db) => {
-        this.$axios.delete(`/database/${db.id}`).then((response)=>{
-
+        this._vm.$axios.delete(`/database/${db.id}`).then((response)=>{
+          this._vm.$q.notify({type:'positive', message: 'Database ' + db.database_name + ' has been deleted'})
         }).catch((err)=>{
           this._vm.$q.notify({type:'negative', message: 'Error deleting database ' + db.database_name})
         })

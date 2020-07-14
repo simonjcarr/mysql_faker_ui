@@ -6,6 +6,7 @@
         class="text-accent bg-secondary"
         v-if="getToken"
       >
+        <q-tab name="database" icon="source" label="Database Settigs" />
         <q-tab name="settings" icon="settings" label="Table Settigs" />
         <q-tab name="json" icon="text_snippet" label="JSON Output" />
         <q-tab name="jobs" icon="queue_play_next" label="Jobs" />
@@ -17,6 +18,9 @@
     </div>
 
       <q-tab-panels v-model="tab" animated class="bg-secondary" v-if="getToken">
+        <q-tab-panel name="database">
+         <DatabaseSettings/>
+        </q-tab-panel>
         <q-tab-panel name="settings">
          <Settings/>
         </q-tab-panel>
@@ -34,6 +38,7 @@
 </template>
 
 <script>
+import DatabaseSettings from '../../components/database/databaseSettings'
 import Settings from '../../components/Settings'
 import JSONPreview from '../../components/JSONPreview'
 import JobDashboard from '../../components/jobs/JobDashboard'
@@ -43,10 +48,11 @@ import { mapGetters } from 'vuex'
 export default {
   data: () => {
     return {
-      tab: 'settings'
+      tab: 'database'
     }
   },
   components: {
+    DatabaseSettings,
     Settings,
     JSONPreview,
     JobDashboard,
