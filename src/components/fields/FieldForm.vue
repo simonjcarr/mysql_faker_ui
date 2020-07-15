@@ -6,7 +6,7 @@
       <div>
         <q-input required v-model="field.name" type="text" label="Field Name" />
         <q-select required v-model="field.data_type" :options="dataTypes" label="Data Type" />
-        <q-input v-model="field.size" type="number" label="Field Size" />
+        <q-input v-model="field.size" type="text" label="Field Size" />
         <div>
           <q-toggle v-model="field.auto_increment" color="green" label="Auto Increment" />
         </div>
