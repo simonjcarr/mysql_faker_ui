@@ -35,10 +35,12 @@ export default {
             ...payload
           })
           .then(({ data }) => {
-            commit("setToken", data.token);
-            commit("setUser", data.user);
-            setAuthHeader(data.token.token)
-            resolve();
+            // commit("setToken", data.token);
+            // commit("setUser", data.user);
+            // setAuthHeader(data.token.token)
+            console.log("I am here")
+            vm.$q.notify({type: 'positive', message: 'A new account has been created. You can now login'})
+            return resolve();
           })
           .catch(err => {
             err.response.data.map(error => {

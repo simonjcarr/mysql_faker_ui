@@ -91,12 +91,8 @@ export default {
           confirm_password: this.confirm_password
         })
         .then(({ data }) => {
-          this.setToken(data.token);
-          this.setUser(data.user);
-          this.$q.notify({
-            type: "positive",
-            message: "Your account has been created you were signed in"
-          });
+          vm.$q.notify({type: 'positive', message: 'A new account has been created. You can now login'})
+          this.$router.push('/user/login')
         })
         .catch(err => {
           this.errors = err.response.data;
