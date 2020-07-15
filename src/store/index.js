@@ -5,6 +5,7 @@ import user from './users'
 import table from './tables'
 import job from './jobs'
 import data_export from './data_export'
+import remotedata from './remotedata'
 import createPersistedState from "vuex-persistedstate";
 
 
@@ -43,7 +44,8 @@ export default function (/* { ssrContext } */) {
       user,
       table,
       job,
-      data_export
+      data_export,
+      remotedata
     },
     plugins: [createPersistedState()],
 

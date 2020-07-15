@@ -33,11 +33,11 @@
         </div>
 
         <div>
-          Connection Status: <span class="text-accent">{{getTestResult}}</span>
+          Connection Status: <span class="text-accent text-bold" :class="{'text-red':testResult.result=='failed', 'text-green':testResult.result=='connected'}">{{getTestResult}}</span>
         </div>
 
         <div>
-          <q-btn size="sm" color="secondary" icon="settings_remote" label="Test Connecton" @click="testConnectionClick" />
+          <q-btn :loading="testing" :disabled="testing"  size="sm" color="secondary" icon="settings_remote" label="Test Connecton" @click="testConnectionClick" />
           <div class="q-mt-md">
             <q-btn :disabled="testResult.result !== 'connected'" size="sm" label="Save Connection" type="submit" color="primary"/>
           </div>
@@ -66,7 +66,8 @@ export default {
           {value: 'mysql', label: 'MySQL', port: 3306},
           {value: 'mssql', label: 'Microsoft SQL Server', port: 1433}
         ],
-        testResult: false
+        testResult: false,
+        testing: false
     }
   },
   watch: {
@@ -76,22 +77,44 @@ export default {
   },
   computed:{
     getTestResult() {
+      if(this.testing){
+        return "Testing"
+      }
       if(this.testResult) {
         if(this.testResult.result == 'connected'){
           return "Connected"
         }
         if(this.testResult.result == 'failed'){
-          return "Connection Failed: " + this.testResult.error
+          return "Connection Failed: " + this.testResult.message
         }
       }
       return "Not Tested"
     }
   },
   methods:{
-    ...mapActions('remotedata', ['testConnection']),
+    ...mapActions('remotedata', ['testConnection', 'saveRemote']),
     testConnectionClick(){
+      this.testing = true
       this.testConnection(this.remote).then((result) => {
+        this.testing = false
         this.testResult = result
+      }).catch(err => {
+        this.testing = false
+        this.testResult = {
+          result: 'failed',
+          message: err.message
+        }
+      })
+    },
+    onSubmit(){
+      this.saveRemote({
+        name: this.remote.name,
+        hostname: this.remote.hostname,
+        port: this.remote.port,
+        username: this.remote.username,
+        password: this.remote.password,
+        dbtype: this.remote.dbtype.value,
+        database: this.remote.database
       })
     }
   }

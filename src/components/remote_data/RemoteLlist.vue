@@ -5,7 +5,16 @@
       :data="remotes"
       :columns="columns"
       row-key="name"
-    />
+      dense
+    >
+    <template v-slot:body-cell-use="props">
+      <q-td :props="props">
+        <div class="flex">
+          <q-btn class="q-ml-sm" size="sm" color="primary" label="Use" @click="useDB(props.row)" />
+        </div>
+      </q-td>
+    </template>
+    </q-table>
   </div>
 </template>
 
@@ -15,14 +24,21 @@ export default {
   data: () => {
     return{
       columns:[
-        { label: "Name", data: 'name', sortable: true},
-        { label: 'Host', data: 'hostname', sortable: true},
-        { label: 'Username', data: 'username', sortable: true}
+        { name: 'use', label: '', field: ''},
+        { name: 'name', label: "Name", field: 'name', sortable: true},
+        { name: 'host', label: 'Host', field: 'hostname', sortable: true},
+        { name: 'database', label: 'Database', field: 'database', sortable: true},
+        { name: 'username', label: 'Username', field: 'username', sortable: true}
       ]
     }
   },
   computed: {
     ...mapState('remotedata', ['remotes'])
+  },
+  methods:{
+    useDB(row){
+      console.log(row)
+    }
   }
 }
 </script>
