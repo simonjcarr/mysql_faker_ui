@@ -4,6 +4,9 @@
       <q-card class="my-card">
         <q-card-section class="flex bg-accent text-secondary">
           <AddTableBtn class="q-mb-sm" :create="true" />
+          <div class="q-ml-sm">
+            <q-btn size="sm" color="primary" dense icon="settings_input_component" label="Manage remotes" @click="manageRemotesClick" />
+          </div>
 
         </q-card-section>
         <q-card-section class="bg-accent text-secondary">
@@ -85,6 +88,9 @@ export default {
           this.selected = []
         })
       })
+    },
+    manageRemotesClick() {
+      this.$router.push('/remote/manage')
     }
   }
 }
