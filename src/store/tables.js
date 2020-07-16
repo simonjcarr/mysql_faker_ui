@@ -14,6 +14,27 @@ export default {
     }
   },
   actions: {
+    createTable({dispatch}, tableData){
+      this._vm.$axios.post(`/table`, {
+        ...tableData
+      }).then((response)=>{
+        this._vm.$q.notify({type: 'positive', message: 'Table has been created'})
+        dispatch('database/getDatabases', {},{root:true})
+      }).catch((err)=>{
+        console.log(err)
+        this._vm.$q.notify({type: 'negative', message: 'There was an error creating the table: ' + err.response})
+      })
+    },
+    updateTable({state, dispatch}, tableData){
+      this._vm.$axios.put(`/table/${state.activeTable.id}`, {
+        ...tableData
+      }).then((response)=>{
+        this._vm.$q.notify({type: 'positive', message: 'Table has been saved'})
+        dispatch('database/getDatabases', {},{root:true})
+      }).catch((err)=>{
+        this._vm.$q.notify({type:'negative', message: 'There was an error saving the table: ' + err})
+      })
+    },
     updateActiveTable({ rootState, commit, state, dispatch }) {
 
       let activeDatabase = rootState.database.activeDatabase

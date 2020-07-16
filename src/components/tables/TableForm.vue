@@ -42,31 +42,13 @@ export default {
   },
   methods: {
     ...mapActions('database', ['getDatabases']),
-    ...mapActions('table', ['updateActiveTable']),
+    ...mapActions('table', ['updateActiveTable', 'createTable', 'updateTable']),
     onSubmit() {
       if(!this.create) {
-
         //we are updating an existing form
-        this.$axios.put(`/table/${this.activeTable.id}`, {
-          ...this.tableData
-        }).then((response)=>{
-          this.$q.notify({type: 'positive', message: 'Table has been saved'})
-          this.getDatabases().then(()=>{
-            this.updateActiveTable()
-          })
-        }).catch((err)=>{
-          this.$q.notify({type:'negative', message: 'There was an error saving the table: ' + err})
-        })
+        this.updateTable(this.tableData)
       }else{
-
-        this.$axios.post(`/table`, {
-          ...this.tableData
-        }).then((response)=>{
-          this.$q.notify({type: 'positive', message: 'Table has been created'})
-          this.getDatabases()
-        }).catch((err)=>{
-          this.$q.notify({type: 'negative', message: 'There was an error creating the table: ' + err.response})
-        })
+        this.createTable(this.tableData)
       }
       this.$emit('close')
     }

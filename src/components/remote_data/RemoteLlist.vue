@@ -19,7 +19,7 @@
 </template>
 
 <script>
-import { mapState } from 'vuex'
+import { mapState, mapActions, mapMutations } from 'vuex'
 export default {
   data: () => {
     return{
@@ -36,9 +36,15 @@ export default {
     ...mapState('remotedata', ['remotes'])
   },
   methods:{
+    ...mapActions('remotedata', ['getTables']),
+    ...mapMutations('remotedata', ['clearSelected', 'setSelectedRemote']),
     useDB(row){
-      console.log(row)
+      this.setSelectedRemote(row.id)
+      this.getTables(row.id)
     }
+  },
+  mounted() {
+    this.clearSelected()
   }
 }
 </script>

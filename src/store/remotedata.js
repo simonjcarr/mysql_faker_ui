@@ -1,13 +1,47 @@
 import jobs from "./jobs"
-
+import _ from 'lodash'
 export default {
   namespaced: true,
   state:{
-    remotes: []
+    remotes: [],
+    mappings: [],
+    selectedRemote: null,
+    tables: [],
+    selectedTable: null,
+    tableSchema: [],
+    tableIndexes: []
+  },
+  getters:{
+    getSelectedRemote(state){
+      return _.filter(state.remotes, remote => {return remote.id == state.selectedRemote})[0]
+    }
   },
   mutations: {
     setRemotes(state, remotes){
       state.remotes = remotes
+    },
+    setTables(state, tables){
+      state.tables = tables
+    },
+    clearSelected(state){
+      state.selectedRemote = null,
+      state.selectedTable = null
+      state.tables = []
+    },
+    setSelectedRemote(state, remote_id){
+      state.selectedRemote = remote_id
+    },
+    setSelectedTable(state, table){
+      state.selectedTable = table
+    },
+    setTableSchema(state, schema){
+      state.tableSchema = schema
+    },
+    setTableIndexes(state, indexes){
+      state.tableIndexes = indexes
+    },
+    clearMappings(state){
+      state.mappings = []
     }
   },
   actions:{
@@ -49,6 +83,20 @@ export default {
             message: err.response.data.originalError.message
           })
         })
+      })
+    },
+    getTables({ commit, state }){
+      this._vm.$axios.get(`/remote/tables/${state.selectedRemote}`).then(({ data }) => {
+        commit('setTables', data)
+      }).catch((err) => {
+        console.log(`Error: ${err}`)
+      })
+    },
+
+    getTableSchema({ commit, state }){
+      this._vm.$axios.get(`/remote/table/schema/${state.selectedRemote}/${state.selectedTable}`).then(({ data }) => {
+        commit('setTableSchema', data.schema)
+        commit('setTableIndexes', data.indexes)
       })
     }
   }
