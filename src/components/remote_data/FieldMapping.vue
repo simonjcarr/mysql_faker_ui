@@ -13,11 +13,7 @@
 
       </q-card-section>
       <q-card-section v-if="showMappings">
-        <div class="">
-          <div class="col-12">
-            <q-input v-model="fieldFilter" type="text" label="Filter Columns" />
-          </div>
-        </div>
+
         <div class="row">
           <div class="text-bold text-primary col-1">Include</div>
           <div class="text-bold text-primary col-2">Remote Field Name</div>
@@ -89,7 +85,6 @@ export default {
         return this.tableSchema
       }else{
         return _.filter(this.tableSchema, (col) => {
-          console.log(col)
           return col.COLUMN_NAME.indexOf(this.fieldFilter) !== -1
         })
       }
