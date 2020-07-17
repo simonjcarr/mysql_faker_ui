@@ -66,7 +66,12 @@ export default {
     ...mapGetters('user', ['getToken'])
   },
   mounted() {
-    this.getDatabases()
+    try{
+      if(this.token.token){
+        console.log("I am here")
+        this.getDatabases()
+      }
+    }catch(err){}
   },
   components:{
     CreateDatabaseBtn

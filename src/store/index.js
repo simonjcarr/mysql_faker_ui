@@ -27,7 +27,7 @@ export default function (/* { ssrContext } */) {
   const Store = new Vuex.Store({
 
     state:{
-      name: 'Simon'
+      name: null
     },
     getters:{
       getName(state) {

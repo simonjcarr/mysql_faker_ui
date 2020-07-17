@@ -21,7 +21,7 @@
           to="/"
         />
         </q-toolbar-title>
-        <div v-if="!token">
+        <div v-if="!getToken">
           <q-btn
           flat
           icon="login"
@@ -37,7 +37,7 @@
           to="/user/register"
         />
         </div>
-        <div v-if="token">
+        <div v-if="getToken">
           <q-btn flat icon="logout" label="Logout" @click="logoutClick" />
           <q-btn flat icon="person" :label="`${user.username}`" />
         </div>
