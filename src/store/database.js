@@ -84,6 +84,7 @@ export default {
       commit('clearDatabases')
     },
     getDatabases({ commit, state, dispatch, rootState }) {
+      console.log("Get Database")
       if(!rootState.user.token){
         return
       }

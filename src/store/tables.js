@@ -14,6 +14,30 @@ export default {
     }
   },
   actions: {
+    createTable({dispatch}, tableData){
+      return new Promise((resolve, reject) => {
+        this._vm.$axios.post(`/table`, {
+          ...tableData
+        }).then(({ data })=>{
+          this._vm.$q.notify({type: 'positive', message: 'Table has been created'})
+          dispatch('database/getDatabases', {},{root:true})
+          return resolve(data)
+        }).catch((err)=>{
+          this._vm.$q.notify({type: 'negative', message: 'There was an error creating the table: ' + err.response})
+          return reject()
+        })
+      })
+    },
+    updateTable({state, dispatch}, tableData){
+      this._vm.$axios.put(`/table/${state.activeTable.id}`, {
+        ...tableData
+      }).then((response)=>{
+        this._vm.$q.notify({type: 'positive', message: 'Table has been saved'})
+        dispatch('database/getDatabases', {},{root:true})
+      }).catch((err)=>{
+        this._vm.$q.notify({type:'negative', message: 'There was an error saving the table: ' + err})
+      })
+    },
     updateActiveTable({ rootState, commit, state, dispatch }) {
 
       let activeDatabase = rootState.database.activeDatabase
@@ -63,12 +87,18 @@ export default {
     },
 
     addField({ dispatch }, field){
-      this._vm.$axios.post('/field', {
-        ...field
-      }).then(()=>{
-        this._vm.$q.notify({type:'positive', message: 'Field created'})
-        dispatch('database/getDatabases', {},{root:true})
-      }).catch(()=>{})
+      return new Promise((resolve, reject) => {
+        this._vm.$axios.post('/field', {
+          ...field
+        }).then(({ data })=>{
+          this._vm.$q.notify({type:'positive', message: 'Field created'})
+          dispatch('database/getDatabases', {},{root:true})
+          return resolve(data)
+        }).catch((err)=>{
+          this._vm.$q.notify({type:'negative', message: 'Error creating field: ' + err})
+          return reject(err)
+        })
+      })
     },
 
     updateFakeQty({ dispatch, state }, command) {
@@ -91,6 +121,7 @@ export default {
           command: payload.command,
           percent: payload.percent
         }).then(()=>{
+          dispatch('database/getDatabases', {}, {root: true})
           this._vm.$q.notify({type:'positive', message: 'Command saved'})
           return resolve()
         }).catch((err) => {
