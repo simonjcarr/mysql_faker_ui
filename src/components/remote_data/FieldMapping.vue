@@ -104,7 +104,8 @@ export default {
             primary_key: field.pk,
             idx: field.index,
             description: '',
-            id: table.id
+            id: table.id,
+            tbl_id: table.id
           }).then((f) => {
             if(field.fakeCommand){
               this.addFieldCommand({

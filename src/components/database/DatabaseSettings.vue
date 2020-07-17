@@ -33,7 +33,8 @@ export default {
     }
   },
   computed: {
-    ...mapState('database', ['activeDatabase'])
+    ...mapState('database', ['activeDatabase']),
+    ...mapState('user', ['user'])
   },
   methods:{
     ...mapActions('database', ['deleteActiveDatabase', 'saveActiveDatabaseSettings']),
@@ -55,7 +56,7 @@ export default {
     }
   },
   mounted() {
-    this.databaseName = this.activeDatabase.database_name
+    this.databaseName = this.activeDatabase.database_name.substring(this.user.username.length + 1)
   }
 }
 </script>
