@@ -24,7 +24,7 @@ export default {
   computed:{
     ...mapState('remotedata', ['tables']),
     tableOptions() {
-      return this.tables.map(table => {
+      return _.sortBy(this.tables, (o) => { return o.TABLE_NAME}).map(table => {
         return {label: table.TABLE_NAME, value: table.TABLE_NAME}
       })
     }
