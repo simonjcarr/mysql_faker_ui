@@ -20,6 +20,7 @@
           <div class="text-bold text-primary col-1">Remote Size</div>
           <div class="text-bold text-primary col-2">Local Field Name</div>
           <div class="text-bold text-primary col-1">Local Type</div>
+          <div class="text-bold text-primary col-1">Local Size</div>
           <div class="text-bold text-primary col-3">Local Indexs</div>
         </div>
 
@@ -36,8 +37,9 @@
 
 <script>
 import FieldMappingCol from './FieldMappingCol'
-import { mapState, mapMutations } from 'vuex'
-import Promise from 'bluebird'
+import { mapState, mapMutations, mapActions } from 'vuex'
+import _ from 'lodash'
+
 export default {
   data: () => {
     return{
@@ -74,15 +76,46 @@ export default {
     FieldMappingCol
   },
   computed:{
-    ...mapState('remotedata', ['mappings', 'tableSchema', 'selectedTable'])
+    ...mapState('remotedata', ['mappings', 'tableSchema', 'selectedTable']),
+    ...mapState('database', ['activeDatabase'])
   },
   methods:{
     ...mapMutations('remotedata', ['clearMappings']),
+    ...mapActions('table', ['createTable', 'addField', 'addFieldCommand']),
     colChanged(data) {
       this.fieldMappings[data.remoteCol.COLUMN_NAME] = data.localCol
     },
     saveMappingsclick(){
-      
+      //Save Table
+      this.createTable({
+        table_name: this.localTableName,
+        fake_qty: this.fakeQty,
+        table_comments: '',
+        database_id: this.activeDatabase.id
+      }).then((table)=>{
+        console.log(this.fieldMappings)
+        _.forEach(this.fieldMappings, (field)=>{
+          this.addField( {
+            name: field.fieldName,
+            data_type: field.dataType,
+            size: field.size,
+            auto_increment: field.ai,
+            nullable: field.nullable,
+            primary_key: field.pk,
+            idx: field.index,
+            description: '',
+            id: table.id
+          }).then((f) => {
+            if(field.fakeCommand){
+              this.addFieldCommand({
+                field_id: f.id,
+                command: field.fakeCommand,
+                percent: field.percent
+              })
+            }
+          })
+        })
+      })
     }
   },
   watch:{

@@ -11,27 +11,29 @@
     <div class="col-2">{{ row.COLUMN_NAME }}</div>
     <div class="col-1">{{ row.DATA_TYPE }}</div>
     <div class="col-1">{{ row.CHARACTER_MAXIMUM_LENGTH }}</div>
-    <div class="col-2">
+    <div class="col-2 q-pr-sm">
       <q-input
         dense
-        filled
         v-model="settings.fieldName"
         type="text"
         label="Local field name"
         :disable="!settings.enabled"
       />
     </div>
-    <div class="col-1 q-ml-sm">
+    <div class="col-1 q-pr-sm">
       <q-select
         dense
         v-model="settings.dataType"
         :options="dataTypes"
         label=""
-        filled
+
         :disable="!settings.enabled"
       />
     </div>
-    <div class="q-ml-sm col-3">
+    <div class="col-1">
+      <q-input dense  v-model="settings.size" type="text" label="size" />
+    </div>
+    <div class="col-3">
       <q-toggle
         v-model="settings.ai"
         color="green"
@@ -51,7 +53,7 @@
         :disable="!settings.enabled"
       />
       <q-toggle
-        class="q-pr-sm"
+        class=""
         v-model="settings.nullable"
         color="green"
         label="Null"
@@ -59,12 +61,21 @@
       />
     </div>
 
-    <div class="col-12">
+    <div class="col-8">
       <q-input
         dense
         v-model="settings.fakeCommand"
         type="text"
         label="Fake Command"
+        :disable="!settings.enabled"
+      />
+    </div>
+    <div class="col-4 q-pl-sm">
+      <q-input
+        dense
+        v-model="settings.percent"
+        type="text"
+        label="Percent"
         :disable="!settings.enabled"
       />
     </div>
@@ -79,11 +90,13 @@ export default {
         enabled: false,
         fieldName: '',
         dataType: '',
+        size: null,
         ai: false,
         pk: false,
         index: false,
         nullable: false,
         fakeCommand: '',
+        percent: 1
       },
       dataTypes: [
         'CHAR',
@@ -115,6 +128,16 @@ export default {
       deep: true,
       handler() {
         this.$emit("changed", {remoteCol: this.row, localCol: this.settings})
+      }
+    },
+    "settings.enabled"(enabled){
+      console.log("I am here")
+      if(enabled){
+        this.settings.fieldName = this.row.COLUMN_NAME
+        this.settings.size = this.row.CHARACTER_MAXIMUM_LENGTH
+        if(this.dataTypes.indexOf(this.row.DATA_TYPE.toUpperCase()) >= 0){
+          this.settings.dataType = this.dataTypes[this.dataTypes.indexOf(this.row.DATA_TYPE.toUpperCase())]
+        }
       }
     }
   },
