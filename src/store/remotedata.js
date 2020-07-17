@@ -95,7 +95,7 @@ export default {
 
     getTableSchema({ commit, state }){
       this._vm.$axios.get(`/remote/table/schema/${state.selectedRemote}/${state.selectedTable}`).then(({ data }) => {
-        commit('setTableSchema', data.schema)
+        commit('setTableSchema', _.sortBy(data.schema, (o)=>{return o.COLUMN_NAME}))
         commit('setTableIndexes', data.indexes)
       })
     }
