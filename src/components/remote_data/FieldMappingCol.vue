@@ -131,12 +131,20 @@ export default {
       }
     },
     "settings.enabled"(enabled){
-      console.log("I am here")
       if(enabled){
         this.settings.fieldName = this.row.COLUMN_NAME
         this.settings.size = this.row.CHARACTER_MAXIMUM_LENGTH
         if(this.dataTypes.indexOf(this.row.DATA_TYPE.toUpperCase()) >= 0){
           this.settings.dataType = this.dataTypes[this.dataTypes.indexOf(this.row.DATA_TYPE.toUpperCase())]
+        }
+        if(this.row.DATA_TYPE == 'nvarchar'){
+          this.settings.dataType = "VARCHAR"
+        }
+        if(this.row.DATA_TYPE == 'datetime2') {
+          this.settings.dataType = 'DATETIME'
+        }
+        if(this.row.DATA_TYPE == 'numeric') {
+          this.setings.dataType = 'DECIMAL'
         }
       }
     }
