@@ -13,6 +13,11 @@
 
       </q-card-section>
       <q-card-section v-if="showMappings">
+        <div class="">
+          <div class="col-12">
+            <q-input v-model="fieldFilter" type="text" label="Filter Columns" />
+          </div>
+        </div>
         <div class="row">
           <div class="text-bold text-primary col-1">Include</div>
           <div class="text-bold text-primary col-2">Remote Field Name</div>
@@ -24,7 +29,7 @@
           <div class="text-bold text-primary col-3">Local Indexs</div>
         </div>
 
-        <div class="q-py-sm"  v-for="(field, index) in tableSchema" :key="index">
+        <div class="q-py-sm"  v-for="(field, index) in getTableSchema" :key="index">
           <FieldMappingCol @changed="colChanged" :row="field" />
         </div>
       </q-card-section>
@@ -69,7 +74,8 @@ export default {
         'TIMESTAMP',
         'TIME',
         'BOOLEAN'
-        ]
+        ],
+      fieldFilter: ""
     }
   },
   components:{
@@ -77,7 +83,17 @@ export default {
   },
   computed:{
     ...mapState('remotedata', ['mappings', 'tableSchema', 'selectedTable']),
-    ...mapState('database', ['activeDatabase'])
+    ...mapState('database', ['activeDatabase']),
+    getTableSchema: function() {
+      if(this.fieldFilter == "") {
+        return this.tableSchema
+      }else{
+        return _.filter(this.tableSchema, (col) => {
+          console.log(col)
+          return col.COLUMN_NAME.indexOf(this.fieldFilter) !== -1
+        })
+      }
+    }
   },
   methods:{
     ...mapMutations('remotedata', ['clearMappings']),
