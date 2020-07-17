@@ -145,6 +145,7 @@ export default {
         }
         if(this.row.DATA_TYPE == 'numeric') {
           this.settings.dataType = 'DECIMAL'
+          this.settings.size = "11,2"
         }
       }
     }
