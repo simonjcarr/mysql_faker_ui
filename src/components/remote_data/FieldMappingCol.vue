@@ -144,7 +144,7 @@ export default {
           this.settings.dataType = 'DATETIME'
         }
         if(this.row.DATA_TYPE == 'numeric') {
-          this.setings.dataType = 'DECIMAL'
+          this.settings.dataType = 'DECIMAL'
         }
       }
     }
