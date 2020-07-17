@@ -30,7 +30,9 @@
         </div>
       </q-card-section>
       <q-card-section>
-        <q-btn color="primary" icon="check" label="Save" @click="saveMappingsclick" />
+        <div v-if="mappingCount == 0" class="text-red">Please create a mapping before saving</div>
+        <div v-if="hasErrors" class="text-red">{{errorCount}} fields have errors. Please fix before you can save</div>
+        <q-btn :disable="hasErrors || mappingCount == 0" color="primary" icon="check" label="Save" @click="saveMappingsclick" />
       </q-card-section>
     </q-card>
   </div>
@@ -71,7 +73,10 @@ export default {
         'TIME',
         'BOOLEAN'
         ],
-      fieldFilter: ""
+      fieldFilter: "",
+      hasErrors: false,
+      errorCount: 0,
+      mappingCount: 0
     }
   },
   components:{
@@ -95,6 +100,22 @@ export default {
     ...mapActions('table', ['createTable', 'addField', 'addFieldCommand']),
     colChanged(data) {
       this.fieldMappings[data.remoteCol.COLUMN_NAME] = data.localCol
+      this.fieldMappings[data.remoteCol.COLUMN_NAME]['error'] = data.error
+
+      if(data.localCol.enabled == false){
+        delete this.fieldMappings[data.remoteCol.COLUMN_NAME]
+      }
+      this.mappingCount = Object.keys(this.fieldMappings).length
+      let errors = _.filter(this.fieldMappings, o => {
+        return o.error == true
+      })
+      if(errors.length > 0){
+        this.hasErrors = true
+        this.errorCount = errors.length
+      }else{
+        this.errorCount = 0
+        this.hasErrors = false
+      }
     },
     saveMappingsclick(){
       //Save Table
